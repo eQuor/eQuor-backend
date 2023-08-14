@@ -3,6 +3,7 @@ package com.eQuor.backend.services;
 import com.eQuor.backend.models.APIRequest;
 import com.eQuor.backend.models.Admin;
 import com.eQuor.backend.models.Staff;
+import com.eQuor.backend.models.User;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 @Service
@@ -57,7 +60,7 @@ public class AdminService {
     }
 
     public APIRequest getAPIRequest(String id) throws ExecutionException, InterruptedException {
-        if (id.equalsIgnoreCase("") || id == null){
+        if (id.equalsIgnoreCase("")){
             return null;
         }
         Firestore database = FirestoreClient.getFirestore();
@@ -77,6 +80,20 @@ public class AdminService {
             return document.toObject(Admin.class);
         else
             return null;
+    }
+
+    public String saveUserDetails(Staff staff) throws ExecutionException, InterruptedException {
+        Firestore database = FirestoreClient.getFirestore();
+        DocumentReference documentReference = database.collection("Admin").document("FAwnOJIs1JSylufwbibm");
+        Map<String, Object> data = new HashMap<>();
+        data.put("Name", staff.getName());
+        data.put("Email", staff.getEmail());
+        data.put("Address", staff.getAddress());
+        data.put("Password", staff.getPassword());
+        data.put("Psername", staff.getUsername());
+        data.put("ApprovedAdminRef", documentReference);
+        ApiFuture<WriteResult> collectionApiFuture = database.collection("Staff").document().set(data);
+        return collectionApiFuture.get().getUpdateTime().toString();
     }
 
 

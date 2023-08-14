@@ -33,4 +33,10 @@ public class AdminController {
     public APIRequest getAPIRequest(@RequestParam(required = false) String id) throws ExecutionException, InterruptedException {
         return adminService.getAPIRequest(id);
     }
+
+    @PostMapping("/createStaff")
+    public String getReq(@RequestBody Staff staff) throws ExecutionException, InterruptedException {
+        return adminService.saveUserDetails(staff);
+    }
+
 }
