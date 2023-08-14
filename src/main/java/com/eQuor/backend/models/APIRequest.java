@@ -13,6 +13,6 @@ public class APIRequest {
     String NIC;
 
     Integer AcceptStatus;
-
+    String Address;
     Admin ApprovedAdmin;
 }
