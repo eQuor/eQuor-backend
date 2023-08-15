@@ -5,16 +5,15 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Student {
+public class Lecturer {
+    String fullName;
     String id;
-    Integer indexNo;
-    String address;
     String email;
+    String address;
     String userName;
     String password;
+    String lectureCode;
     String propic;
-    String fullName;
-    String regNo;
 
     Staff approvedStaff;
 }
