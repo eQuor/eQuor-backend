@@ -26,7 +26,7 @@ public class AdminController {
     }
 
     @GetMapping("/getApiRequests")
-    public List<APIRequest> getAPIRequests(@RequestParam(required = false) int filterByAcceptStatus) throws ExecutionException, InterruptedException {
+    public List<APIRequest> getAPIRequests(@RequestParam(required = false) Integer filterByAcceptStatus) throws ExecutionException, InterruptedException {
         return adminService.getRequestAll(filterByAcceptStatus);
     }
     @GetMapping("/getApiRequest")
