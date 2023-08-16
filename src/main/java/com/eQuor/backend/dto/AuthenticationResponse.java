@@ -1,4 +1,4 @@
-package com.eQuor.backend.models;
+package com.eQuor.backend.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,6 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AuthenticationResponse {
-
-    private String token;
+    Boolean status;
+    String id;
+    String role;
 }
