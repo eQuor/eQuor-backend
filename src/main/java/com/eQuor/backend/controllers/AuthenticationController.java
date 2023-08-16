@@ -19,14 +19,4 @@ import java.util.concurrent.ExecutionException;
 @RequiredArgsConstructor
 public class AuthenticationController {
 
-    private final AuthenticationService authenticationService;
-    @PostMapping("/register")
-    public String register(@RequestBody User user) throws ExecutionException, InterruptedException {
-        return authenticationService.register(user);
-    }
-
-    @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody AuthenticationRequest request){
-        return ResponseEntity.ok(authenticationService.authenticate(request));
-    }
 }

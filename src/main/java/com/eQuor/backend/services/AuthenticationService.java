@@ -20,17 +20,5 @@ import java.util.concurrent.ExecutionException;
 @Service
 public class AuthenticationService {
 
-    private final AuthenticationManager authenticationManager;
 
-    public String register(User request) throws ExecutionException, InterruptedException {
-
-            Firestore database = FirestoreClient.getFirestore();
-            ApiFuture<WriteResult> collectionApiFuture = database.collection("User").document().set(request);
-            return collectionApiFuture.get().getUpdateTime().toString();
-    }
-
-
-    public AuthenticationResponse register(AuthenticationRequest request){
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-    }
 }
