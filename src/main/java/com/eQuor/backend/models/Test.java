@@ -12,11 +12,11 @@ import lombok.*;
 @Table(name = "\"user\"")
 public class Test {
     @Id
-    @Column(name="user_id")
+    @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "uname")
+    @Column(name = "name")
     private String name;
 
     @Column(name = "age")

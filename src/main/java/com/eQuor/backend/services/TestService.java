@@ -15,8 +15,8 @@ public class TestService {
     private TestRepository testRepository;
     @Autowired
     private ModelMapper modelMapper;
-    public TestDTO saveUser(TestDTO testDTO){
-        testRepository.save(modelMapper.map(testDTO, Test.class));
-        return testDTO;
+    public Test saveUser(TestDTO testDTO){
+        Test savedTest = testRepository.save(modelMapper.map(testDTO, Test.class));
+        return savedTest;
     }
 }
