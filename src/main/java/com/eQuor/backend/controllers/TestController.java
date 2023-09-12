@@ -17,4 +17,9 @@ public class TestController {
     public Test saveUser(@RequestBody TestDTO testDTO){
        return testService.saveUser(testDTO);
     }
+
+    @GetMapping("/testUser")
+    public String saveUser(@RequestBody String testDTO){
+        return "hihi";
+    }
 }

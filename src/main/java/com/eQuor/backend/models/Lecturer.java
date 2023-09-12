@@ -12,13 +12,12 @@ import java.math.BigInteger;
 @Data
 @Getter
 @Setter
-@Table(name = "\"staff_member\"")
-public class Staff {
+@Table(name = "\"lecturer\"")
+public class Lecturer {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     @JsonInclude(JsonInclude.Include.ALWAYS)
-    BigInteger id;
+    String id;
     @Column(name = "name")
     String name;
     @Column(name = "email")
@@ -27,12 +26,12 @@ public class Staff {
     String password;
 
     @Column(name = "user_name")
-    String username;
+    String user_name;
     @Column(name = "address")
     String address;
 
 
-    @Column(name = "managed_admin")
-    Integer managedAdmin;
+    @Column(name = "managed_staff")
+    Integer managedStaff;
 
 }
