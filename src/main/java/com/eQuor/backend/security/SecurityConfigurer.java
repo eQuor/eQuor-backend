@@ -7,8 +7,6 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
-import lombok.Value;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -16,21 +14,19 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfigurer {
+public class SecurityConfigurer   {
     private final RsaKeyProperties rsaKeys;
 
 
@@ -39,22 +35,30 @@ public class SecurityConfigurer {
 
 
 
-    public SecurityConfigurer(RsaKeyProperties rsaKeys) {
+
+    public SecurityConfigurer(RsaKeyProperties rsaKeys, DbUserDetailService dbUserDetailService) {
         this.rsaKeys = rsaKeys;
+        this.dbUserDetailService = dbUserDetailService;
     }
 
-    @Bean
-    public InMemoryUserDetailsManager user(){
-        return new InMemoryUserDetailsManager(
-                User.withUsername("Senith")
-                        .password("{noop}nopassword")
-                        .authorities("read")
-                        .build()
-        );
-    }
+//    @Bean
+//    public InMemoryUserDetailsManager user(){
+//        return new InMemoryUserDetailsManager(
+//                User.withUsername("senithkay")
+//                        .password("{noop}senith")
+//                        .authorities("read")
+//                        .build()
+//        );
+//    }
+
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//        return new DbUserDetailService();
+//    }
+//
 
 
-
+    private final DbUserDetailService dbUserDetailService;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
@@ -65,6 +69,7 @@ public class SecurityConfigurer {
         )
                 .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(Customizer.withDefaults())
+                .userDetailsService(dbUserDetailService)
                 .build();
     }
 
@@ -85,6 +90,11 @@ public class SecurityConfigurer {
         JWK jwk = new RSAKey.Builder(rsaKeys.publicKey()).privateKey(rsaKeys.privateKey()).build();
         JWKSource<SecurityContext> jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
         return new NimbusJwtEncoder(jwks);
+    }
+
+    @Bean
+    PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
     }
 
 }
