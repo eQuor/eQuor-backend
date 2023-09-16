@@ -18,12 +18,11 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name = "\"staff_member\"")
-public class Staff implements UserDetails {
+public class Staff{
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     @JsonInclude(JsonInclude.Include.ALWAYS)
-    BigInteger id;
+    String id;
     @Column(name = "name")
     String name;
     @Column(name = "email")
@@ -38,33 +37,16 @@ public class Staff implements UserDetails {
 
 
     @Column(name = "managed_admin")
-    Integer managedAdmin;
+    String managedAdmin;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "role")
     private Role role;
 
-    @Override
+
+
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 }

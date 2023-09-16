@@ -22,6 +22,12 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.filter.CorsFilter;
+
+
+import java.util.Arrays;
+import java.util.List;
 
 
 @Configuration
@@ -62,6 +68,7 @@ public class SecurityConfigurer   {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
+                .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeRequests(auth->auth.anyRequest().authenticated())
                 .oauth2ResourceServer((oauth2) -> oauth2
@@ -72,6 +79,7 @@ public class SecurityConfigurer   {
                 .userDetailsService(dbUserDetailService)
                 .build();
     }
+
 
     @Bean
     JwtDecoder jwtDecoder(){

@@ -29,5 +29,5 @@ public class APIRequest {
     @Column(name="address")
     String address;
     @Column(name="managed_admin")
-    Integer managed_admin;
+    String managed_admin;
 }

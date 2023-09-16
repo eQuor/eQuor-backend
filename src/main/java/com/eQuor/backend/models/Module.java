@@ -27,10 +27,10 @@ public class Module {
 
 
     @Column(name = "managed_staff")
-    Integer managedStaff;
+    String managedStaff;
     @PrePersist
     public void prePersist() {
-        this.managedStaff = 1;
+        this.managedStaff = "2021STF021";
     }
 
 }
