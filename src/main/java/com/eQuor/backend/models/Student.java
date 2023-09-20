@@ -24,8 +24,7 @@ public class Student {
     @Column(name = "id")
     String id;
 
-    @Column(name = "reg_no")
-    String reg_no;
+
     @Column(name = "name")
     String name;
     @Column(name = "email")
