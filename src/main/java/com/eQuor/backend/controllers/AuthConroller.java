@@ -34,7 +34,7 @@ public class AuthConroller {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + token);
         System.out.println(authentication.getAuthorities());
-        AuthenticationResponse authenticationResponse = new AuthenticationResponse(authentication.getName(), authentication.getAuthorities());
+        AuthenticationResponse authenticationResponse = new AuthenticationResponse(authentication.getName(), token,true, authentication.getAuthorities());
         return ResponseEntity.ok().headers(headers).body(authenticationResponse);
     }
 }

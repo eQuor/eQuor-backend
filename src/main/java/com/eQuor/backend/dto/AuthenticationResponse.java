@@ -16,6 +16,8 @@ import java.util.Collection;
 @AllArgsConstructor
 public class AuthenticationResponse {
     String username;
+    String jwtToken;
+    Boolean isAuth;
 
     private Collection<? extends GrantedAuthority> role;
 
