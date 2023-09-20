@@ -36,7 +36,7 @@ public class Lecturer {
 
 
     @Column(name = "managed_staff")
-    Integer managedStaff;
+    String managedStaff;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
