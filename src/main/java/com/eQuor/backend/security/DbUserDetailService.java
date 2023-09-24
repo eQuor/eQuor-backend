@@ -1,10 +1,7 @@
 package com.eQuor.backend.security;
 
 
-import com.eQuor.backend.models.Admin;
-import com.eQuor.backend.models.Lecturer;
-import com.eQuor.backend.models.Staff;
-import com.eQuor.backend.models.Student;
+import com.eQuor.backend.models.*;
 import com.eQuor.backend.repositories.AdminRepository;
 import com.eQuor.backend.repositories.LecturerRepository;
 import com.eQuor.backend.repositories.StaffRepository;
@@ -66,7 +63,8 @@ public class DbUserDetailService implements UserDetailsService {
                             return new UserDetail(admin.getId(), admin.getUsername(), admin.getPassword(), admin.getAuthorities());
                         }
                         else{
-                            throw new UsernameNotFoundException("Coud not find user " + username);
+                            throw new UsernameNotFoundException("Could not find user " + username);
+
                         }
                     }
                 }
