@@ -35,12 +35,19 @@ public class Lecturer {
     String address;
 
 
+
+
+
     @Column(name = "managed_staff")
     String managedStaff;
+
+
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
     private Role role;
+
+
 
 
 
