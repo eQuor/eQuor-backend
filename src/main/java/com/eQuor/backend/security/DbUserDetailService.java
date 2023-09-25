@@ -58,6 +58,7 @@ public class DbUserDetailService implements UserDetailsService {
                     System.out.println("wed");
                     Lecturer lecturer = this.lecturerRepository.findByUsername(username);
                     if (lecturer != null){
+
                         return new UserDetail(lecturer.getId(), lecturer.getUsername(), lecturer.getPassword(), lecturer.getAuthorities());
                     }
                     else{

@@ -29,12 +29,23 @@ public class AuthConroller {
     @CrossOrigin
     public ResponseEntity<AuthenticationResponse> token(Authentication authentication){
         LOG.debug("Token requested for user: '{}'", authentication.getName());
+
         String token = tokenService.generateToken(authentication);
+
         LOG.debug("Token granted '{}'", token);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + token);
         System.out.println(authentication.getAuthorities());
+
         AuthenticationResponse authenticationResponse = new AuthenticationResponse(authentication.getName(), token,true, authentication.getAuthorities());
         return ResponseEntity.ok().headers(headers).body(authenticationResponse);
+    }
+
+    @PostMapping("/getId")
+    @CrossOrigin
+    public String getID(Authentication authentication){
+
+        System.out.println("Name is: "+authentication.getName());
+        return "aa";
     }
 }
