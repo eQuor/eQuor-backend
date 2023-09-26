@@ -37,4 +37,14 @@ public class AuthConroller {
         AuthenticationResponse authenticationResponse = new AuthenticationResponse(authentication.getName(), token,true, authentication.getAuthorities());
         return ResponseEntity.ok().headers(headers).body(authenticationResponse);
     }
+
+
+
+    @PostMapping("/getId")
+    @CrossOrigin
+    public String getID(Authentication authentication){
+
+        System.out.println("Name is: "+authentication.getName());
+        return "aa";
+    }
 }
