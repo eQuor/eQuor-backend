@@ -1,15 +1,16 @@
 package com.eQuor.backend.controllers;
 
 import com.eQuor.backend.dto.AuthenticationResponse;
-import com.eQuor.backend.services.StudentService;
 import com.eQuor.backend.services.TokenService;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 
 @CrossOrigin
@@ -19,8 +20,6 @@ public class AuthConroller {
     private static final Logger LOG = LoggerFactory.getLogger(AuthConroller.class);
 
     private final TokenService tokenService;
-    @Autowired
-    private StudentService studentService;
 
     public AuthConroller(TokenService tokenService){
         this.tokenService = tokenService;
