@@ -10,5 +10,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @RepositoryRestResource(collectionResourceRel = "student", path = "student")
 @CrossOrigin
 public interface StudentRepository extends JpaRepository<Student,Integer> {
-    Student findByUsername(String username);
+    static Student findByUsername(String username) {
+        return null;
+    }
+
 }

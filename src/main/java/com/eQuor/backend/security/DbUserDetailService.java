@@ -49,7 +49,7 @@ public class DbUserDetailService implements UserDetailsService {
             }
             else{
 
-                Student student = this.studentRepository.findByUsername(username);
+                Student student = StudentRepository.findByUsername(username);
                 if (student != null){
 
                     return new UserDetail(student.getId(), student.getUsername(), student.getPassword(), student.getAuthorities());
