@@ -13,7 +13,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 @Transactional
@@ -31,14 +35,90 @@ public class StudentService {
         return "";
     }
 
-    public void updateQr(Authentication authentication) {
-        String username = authentication.getName();
+//    public void updateQr(Authentication authentication) {
+//        String username = authentication.getName();
+//        Student student = studentRepository.findByUsername(username);
+//        String qr = "1234";
+//        if (student != null) {
+//            // Update the QR code for the student
+//            student.setQrCode(qr);
+//            studentRepository.save(student);
+//        }
+//    }
+
+//        public void updateQr(Authentication authentication) {
+//        String username = authentication.getName();
+//
+//        //Generating random number
+//            Random random = new Random();
+//            int randomNumber = random.nextInt(100);
+//
+//            String result = username + randomNumber;
+////            int qr = result.hashCode();
+////            String qrString = Integer.toString(qr);
+//
+//            MessageDigest md = MessageDigest.getInstance("SHA-256");
+//
+//            // compute the hash of the input string
+//            byte[] hash = md.digest(result.getBytes());
+//
+//            // convert the hash to a hexadecimal string
+//            StringBuilder hexString = new StringBuilder();
+//            for (byte b : hash) {
+//                hexString.append(String.format("%02x", b));
+//            }
+//
+//            // print the hash
+//            System.out.println(hexString);
+//
+//
+//        Student student = studentRepository.findByUsername(username);
+////        String qr = "1234";
+//        if (student != null) {
+//            // Update the QR code for the student
+//            student.setQrCode(String.valueOf(hexString));
+//            studentRepository.save(student);
+//        }
+//    }
+public String updateQr(Authentication authentication) {
+    String username = authentication.getName();
+
+    // Generating random number
+    Random random = new Random();
+    int randomNumber = random.nextInt(100);
+
+    String result = username + randomNumber;
+
+    StringBuilder hexString = null;
+    try {
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+
+        // Compute the hash of the input string
+        byte[] hash = md.digest(result.getBytes(StandardCharsets.UTF_8));
+
+        // Convert the hash to a hexadecimal string
+        hexString = new StringBuilder();
+        for (byte b : hash) {
+            hexString.append(String.format("%02x", b));
+        }
+
+        // Print the hash
+        System.out.println(hexString);
+
         Student student = studentRepository.findByUsername(username);
-        String qr = "123";
+
         if (student != null) {
             // Update the QR code for the student
-            student.setQrCode(qr);
+            student.setQrCode(hexString.toString()); // Convert the StringBuilder to a String
             studentRepository.save(student);
         }
+    } catch (NoSuchAlgorithmException e) {
+        e.printStackTrace();
     }
+    return hexString.toString();
+}
+
+
+
+
 }

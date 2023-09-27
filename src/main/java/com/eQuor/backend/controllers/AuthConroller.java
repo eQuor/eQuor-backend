@@ -56,9 +56,9 @@ public class AuthConroller {
         System.out.println(authentication);
         //return "aa";
 
-        studentService.updateQr(authentication);
+        return studentService.updateQr(authentication);
 //        String name = authentication.getName();
-        return authentication.getName();
+       // return authentication.getName();
 
 
 
