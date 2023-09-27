@@ -46,10 +46,6 @@ public class Student {
     @Column(name = "role")
     private Role role;
 
-    @Column(name = "device_qr")
-    String deviceQr;
-
-
 
 
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -1,17 +1,16 @@
 package com.eQuor.backend.controllers;
 
 import com.eQuor.backend.dto.AuthenticationResponse;
-import com.eQuor.backend.dto.StudentInfoDto;
-import com.eQuor.backend.models.Student;
-import com.eQuor.backend.repositories.StudentRepository;
-import com.eQuor.backend.services.StudentService;
 import com.eQuor.backend.services.TokenService;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 
 @CrossOrigin
@@ -41,24 +40,11 @@ public class AuthConroller {
 
 
 
-//    @GetMapping("/getId")
-//    @CrossOrigin
-//    public String getID(Authentication authentication){
-//
-//        System.out.println("Name is: "+authentication.getName());
-//        System.out.println(authentication);
-//        //return "aa";
-//
-////        String name = authentication.getName();
-//        return authentication.getName();
-//
-//
-//    }
+    @PostMapping("/getId")
+    @CrossOrigin
+    public String getID(Authentication authentication){
 
-    @GetMapping("/getId")
-    public StudentInfoDto getUser(Authentication authentication){
-        //return userService.updateUser(userDTO);
-        return StudentService.updateStudent(authentication);
-
+        System.out.println("Name is: "+authentication.getName());
+        return "aa";
     }
 }
