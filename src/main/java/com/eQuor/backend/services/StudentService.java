@@ -34,52 +34,7 @@ public class StudentService {
         System.out.println(mobile);
         return "";
     }
-
-//    public void updateQr(Authentication authentication) {
-//        String username = authentication.getName();
-//        Student student = studentRepository.findByUsername(username);
-//        String qr = "1234";
-//        if (student != null) {
-//            // Update the QR code for the student
-//            student.setQrCode(qr);
-//            studentRepository.save(student);
-//        }
-//    }
-
-//        public void updateQr(Authentication authentication) {
-//        String username = authentication.getName();
-//
-//        //Generating random number
-//            Random random = new Random();
-//            int randomNumber = random.nextInt(100);
-//
-//            String result = username + randomNumber;
-////            int qr = result.hashCode();
-////            String qrString = Integer.toString(qr);
-//
-//            MessageDigest md = MessageDigest.getInstance("SHA-256");
-//
-//            // compute the hash of the input string
-//            byte[] hash = md.digest(result.getBytes());
-//
-//            // convert the hash to a hexadecimal string
-//            StringBuilder hexString = new StringBuilder();
-//            for (byte b : hash) {
-//                hexString.append(String.format("%02x", b));
-//            }
-//
-//            // print the hash
-//            System.out.println(hexString);
-//
-//
-//        Student student = studentRepository.findByUsername(username);
-////        String qr = "1234";
-//        if (student != null) {
-//            // Update the QR code for the student
-//            student.setQrCode(String.valueOf(hexString));
-//            studentRepository.save(student);
-//        }
-//    }
+    
 public String updateQr(Authentication authentication) {
     String username = authentication.getName();
 
