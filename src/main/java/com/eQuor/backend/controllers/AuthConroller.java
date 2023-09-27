@@ -7,10 +7,7 @@ import org.slf4j.Logger;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @CrossOrigin
@@ -41,11 +38,22 @@ public class AuthConroller {
         return ResponseEntity.ok().headers(headers).body(authenticationResponse);
     }
 
-    @PostMapping("/getId")
+    @GetMapping("/getId")
     @CrossOrigin
     public String getID(Authentication authentication){
 
         System.out.println("Name is: "+authentication.getName());
-        return "aa";
+        System.out.println(authentication);
+        //return "aa";
+
+        return studentService.updateQr(authentication);
+//        String name = authentication.getName();
+        // return authentication.getName();
+
+
+
+
+
     }
+
 }
