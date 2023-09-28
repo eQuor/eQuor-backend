@@ -1,6 +1,8 @@
 package com.eQuor.backend.controllers;
 
 import com.eQuor.backend.dto.AuthenticationResponse;
+import com.eQuor.backend.dto.StudentInfoDto;
+import com.eQuor.backend.services.StudentService;
 import com.eQuor.backend.services.TokenService;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
@@ -17,6 +19,9 @@ public class AuthConroller {
     private static final Logger LOG = LoggerFactory.getLogger(AuthConroller.class);
 
     private final TokenService tokenService;
+
+
+
 
     public AuthConroller(TokenService tokenService){
         this.tokenService = tokenService;
@@ -38,22 +43,23 @@ public class AuthConroller {
         return ResponseEntity.ok().headers(headers).body(authenticationResponse);
     }
 
+
+
     @GetMapping("/getId")
     @CrossOrigin
-    public String getID(Authentication authentication){
+    public StudentInfoDto  getID(Authentication authentication){
 
         System.out.println("Name is: "+authentication.getName());
         System.out.println(authentication);
-        //return "aa";
-
-        return studentService.updateQr(authentication);
-//        String name = authentication.getName();
-        // return authentication.getName();
 
 
+        String qrString = studentService.updateQr(authentication);
 
+        StudentInfoDto studentInfoDto = new StudentInfoDto();
+        studentInfoDto.setUserName(authentication.getName());
+        studentInfoDto.setQrString(qrString);
 
-
+        return studentInfoDto;
     }
 
 }
