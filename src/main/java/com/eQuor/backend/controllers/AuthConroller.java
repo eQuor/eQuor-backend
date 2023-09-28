@@ -50,14 +50,27 @@ public class AuthConroller {
     public StudentInfoDto  getID(Authentication authentication){
 
         System.out.println("Name is: "+authentication.getName());
-        System.out.println(authentication);
+        //System.out.println(authentication);
+
+        //Access token
+        String token = authentication.getCredentials().toString();
+        System.out.println("meka tokan eka");
+
+        System.out.println(token);
+
+        StudentInfoDto  studentInfoDto = studentService.updateQr(authentication);
 
 
-        String qrString = studentService.updateQr(authentication);
 
-        StudentInfoDto studentInfoDto = new StudentInfoDto();
-        studentInfoDto.setUserName(authentication.getName());
-        studentInfoDto.setQrString(qrString);
+        //String token = authentication.getCredentials().toString();
+
+
+
+
+        //Pass created values to dto object
+//        StudentInfoDto studentInfoDto = new StudentInfoDto();
+//        studentInfoDto.setUserName(authentication.getName());
+//        studentInfoDto.setQrString(qrString);
 
         return studentInfoDto;
     }

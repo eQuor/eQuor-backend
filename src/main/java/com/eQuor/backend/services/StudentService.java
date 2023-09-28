@@ -2,6 +2,7 @@ package com.eQuor.backend.services;
 
 
 import com.eQuor.backend.dto.MobileInfoDto;
+import com.eQuor.backend.dto.StudentInfoDto;
 import com.eQuor.backend.dto.TestDTO;
 import com.eQuor.backend.models.Mobile;
 import com.eQuor.backend.models.Student;
@@ -35,8 +36,9 @@ public class StudentService {
         return "";
     }
     
-public String updateQr(Authentication authentication) {
+public StudentInfoDto updateQr(Authentication authentication) {
     String username = authentication.getName();
+    String token = authentication.getCredentials().toString();
 
     // Generating random number
     Random random = new Random();
@@ -65,12 +67,23 @@ public String updateQr(Authentication authentication) {
         if (student != null) {
             // Update the QR code for the student
             student.setQrCode(hexString.toString()); // Convert the StringBuilder to a String
+            student.setToken(token);
             studentRepository.save(student);
         }
     } catch (NoSuchAlgorithmException e) {
         e.printStackTrace();
     }
-    return hexString.toString();
+
+    StudentInfoDto studentInfoDto = new StudentInfoDto();
+    studentInfoDto.setUserName(authentication.getName());
+    studentInfoDto.setQrString(hexString.toString());
+    studentInfoDto.setToken(token);
+
+
+
+    //return hexString.toString();
+
+    return studentInfoDto;
 }
 
 
