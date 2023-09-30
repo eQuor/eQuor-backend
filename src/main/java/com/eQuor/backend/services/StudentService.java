@@ -11,6 +11,7 @@ import com.eQuor.backend.repositories.StudentRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,7 +38,10 @@ public class StudentService {
     
 public StudentInfoDto updateQr(Authentication authentication) {
     String username = authentication.getName();
-    String token = authentication.getCredentials().toString();
+    Object principal = authentication.getPrincipal();
+    Jwt jwt = (Jwt) principal;
+    String token = jwt.getTokenValue();
+
 
     // Generating random number
     Random random = new Random();
@@ -76,7 +80,6 @@ public StudentInfoDto updateQr(Authentication authentication) {
     StudentInfoDto studentInfoDto = new StudentInfoDto();
     studentInfoDto.setUserName(authentication.getName());
     studentInfoDto.setQrString(hexString.toString());
-    studentInfoDto.setToken(token);
 
 
 

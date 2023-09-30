@@ -6,5 +6,7 @@ public enum Role {
     ADMIN,
     STAFF,
     STUDENT,
-    LECTURER
+    LECTURER,
+
+    NOAUTH
 }
