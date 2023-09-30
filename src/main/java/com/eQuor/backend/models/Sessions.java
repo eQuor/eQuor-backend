@@ -24,4 +24,6 @@ public class Sessions {
     String end_time;
     @Column(name = "session_name")
     String session_name;
+    @Column(name = "module_id")
+    Integer module_id;
 }
