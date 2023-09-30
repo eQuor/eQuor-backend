@@ -25,6 +25,6 @@ replay_pid*
 
 
 #firestoreKey
-serviceAccount.json
+src/main/resources/serviceAccount.json
 
 .idea
