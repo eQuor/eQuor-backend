@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 @RestController
 @RequestMapping(value = "/api/v1/auth")
-public class AuthConroller {
-    private static final Logger LOG = LoggerFactory.getLogger(AuthConroller.class);
+public class AuthController {
+    private static final Logger LOG = LoggerFactory.getLogger(AuthController.class);
 
     private final TokenService tokenService;
 
-    public AuthConroller(TokenService tokenService){
+    public AuthController(TokenService tokenService){
         this.tokenService = tokenService;
     }
 
