@@ -1,6 +1,7 @@
 package com.eQuor.backend.configurations;
 
 import com.eQuor.backend.models.*;
+import com.eQuor.backend.models.Module;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
@@ -13,6 +14,6 @@ public class RepositoryConfig implements RepositoryRestConfigurer {
 
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors) {
-        config.exposeIdsFor(Staff.class, APIRequest.class, Test.class, Lecturer.class, Student.class);
+        config.exposeIdsFor(Staff.class, APIRequest.class, Test.class, Lecturer.class, Student.class, Module.class);
     }
 }
