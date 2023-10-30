@@ -9,7 +9,9 @@ import lombok.*;
 @Getter
 @Setter
 public class LecturerModuleDto {
-    String lecture_id;
-
-    String module_id;
+//    String lecture_id;
+//
+//    String module_id;
+     String name;
+     String email;
 }
