@@ -13,7 +13,6 @@ import lombok.*;
 public class OnlineStudentInfo {
     @Id
     String student_id;
-//    Integer session_id;
     String student_name;
     String student_email;
     Boolean is_joined;

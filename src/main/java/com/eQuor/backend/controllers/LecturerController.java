@@ -1,12 +1,11 @@
 package com.eQuor.backend.controllers;
 
 import com.eQuor.backend.dto.LecturerAttendaneStat;
+import com.eQuor.backend.dto.OnlineStudentInfoDTO;
 import com.eQuor.backend.services.LecturerService;
+import org.hibernate.mapping.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/api/v1/lecture")
@@ -25,7 +24,7 @@ public class LecturerController {
         return lecturerService.getattendancecont();
     }
     @GetMapping("/online")
-    public List<OnlineStudentInfoDTO>  getAllOnlineStudentBySessionId(@RequestParam(name = "session_id") String session_id){
+    public List<OnlineStudentInfoDTO> getAllOnlineStudentBySessionId(@RequestParam(name = "session_id") String session_id){
         return lecturerService.getAllOnlineStudentBySessionId(Integer.parseInt(session_id));
     }
 }
