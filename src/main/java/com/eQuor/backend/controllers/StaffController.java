@@ -1,13 +1,17 @@
 package com.eQuor.backend.controllers;
 
 
-import com.eQuor.backend.dto.StudentInfoDto;
+import com.eQuor.backend.dto.LecturerModuleDto;
+import com.eQuor.backend.models.LecturerRegisterModule;
 import com.eQuor.backend.models.Module;
+import com.eQuor.backend.models.StudentRegisterModule;
 import com.eQuor.backend.repositories.ModuleRepository;
-import com.eQuor.backend.repositories.StudentRepository;
+import com.eQuor.backend.services.StaffService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -32,4 +36,25 @@ public class StaffController {
         return module;
 
     }
+
+    //Assign Lecturers to modules
+    @Autowired
+    private StaffService staffService;
+
+    @Autowired
+    private ModelMapper modelMapper;
+
+    @PostMapping("/lecturer-modules")
+    public List<LecturerRegisterModule> saveAllLecturers(@RequestBody List<LecturerRegisterModule> lecturerModule){
+
+        return staffService.saveAllLecturers(lecturerModule);
+    }
+
+    @PostMapping("/student-modules")
+    public List<StudentRegisterModule> saveAllStudents(@RequestBody List<StudentRegisterModule> studentModule){
+
+        return staffService.saveAllStudents(studentModule);
+    }
+
+
 }
