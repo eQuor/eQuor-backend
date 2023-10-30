@@ -45,6 +45,11 @@ public class Student {
     @Column(name = "role")
     private Role role;
 
+    @Column(name = "device_qr")
+    String qrCode;
+
+    @Column(name = "token")
+    String token;
 
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
