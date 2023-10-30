@@ -1,82 +1,53 @@
-//package com.eQuor.backend.services;
-//
-//import com.eQuor.backend.models.Admin;
-//import com.eQuor.backend.models.Lecturer;
-//import com.eQuor.backend.models.Staff;
-//import com.eQuor.backend.models.Student;
-//import com.google.api.core.ApiFuture;
-//import com.google.cloud.firestore.*;
-//import com.google.firebase.cloud.FirestoreClient;
-//import org.springframework.stereotype.Service;
-//
-//import java.util.ArrayList;
-//import java.util.HashMap;
-//import java.util.List;
-//import java.util.Map;
-//import java.util.concurrent.ExecutionException;
-//
-//@Service
-//public class StaffService {
-//    public String createStudent(Student student) throws ExecutionException, InterruptedException {
-//        Firestore database = FirestoreClient.getFirestore();
-//        DocumentReference documentReference = database.collection("Staff").document("xUFgo7CczxabWIApFFCO");
-//        Map<String, Object> data = new HashMap<>();
-//        data.put("fullName", student.getFullName());
-//        data.put("email", student.getEmail());
-//        data.put("address", student.getAddress());
-//        data.put("password", student.getPassword());
-//        data.put("indexNo", student.getIndexNo());
-//        data.put("regNo",student.getRegNo());
-//        data.put("propic",student.getPropic());
-//        data.put("userName",student.getUserName());
-//        data.put("approvedStaffRef", documentReference);
-//        ApiFuture<WriteResult> collectionApiFuture = database.collection("Student").document().set(data);
-//        return collectionApiFuture.get().getUpdateTime().toString();
-//    }public String createLecturer(Lecturer lecturer) throws ExecutionException, InterruptedException {
-//        Firestore database = FirestoreClient.getFirestore();
-//        DocumentReference documentReference = database.collection("Staff").document("xUFgo7CczxabWIApFFCO");
-//        Map<String, Object> data = new HashMap<>();
-//        data.put("fullName", lecturer.getFullName());
-//        data.put("email", lecturer.getEmail());
-//        data.put("lectureCode",lecturer.getLectureCode());
-//        data.put("address", lecturer.getAddress());
-//        data.put("password", lecturer.getPassword());
-//        data.put("propic",lecturer.getPropic());
-//        data.put("userName",lecturer.getUserName());
-//        data.put("approvedStaffRef", documentReference);
-//        ApiFuture<WriteResult> collectionApiFuture = database.collection("Lecturer").document().set(data);
-//        return collectionApiFuture.get().getUpdateTime().toString();
-//    }
-//
-//    public List<Student> getStudent(String id) throws ExecutionException, InterruptedException{
-//        Firestore database = FirestoreClient.getFirestore();
-//        ApiFuture<QuerySnapshot> collectionApiFuture = database.collection("Student").get();
-//        List<QueryDocumentSnapshot> documentSnapshotList = collectionApiFuture.get().getDocuments();
-//        List<Student> studentList = new ArrayList<>();
-//        for (QueryDocumentSnapshot document : documentSnapshotList){
-//            Student student = document.toObject(Student.class);
-//            student.setId(document.getId());
-//            DocumentReference approvedStaffRef = (DocumentReference) document.get("approvedStaffRef");
-//            System.out.printf(approvedStaffRef.toString());
-//            Staff approvedStaff = approvedStaffRef.get().get().toObject(Staff.class);
-//            student.setApprovedStaff(approvedStaff);
-//            studentList.add(student);
-//        }
-//        return studentList;
-//    } public List<Lecturer> getLecturer(String id) throws ExecutionException, InterruptedException{
-//        Firestore database = FirestoreClient.getFirestore();
-//        ApiFuture<QuerySnapshot> collectionApiFuture = database.collection("Lecturer").get();
-//        List<QueryDocumentSnapshot> documentSnapshotList = collectionApiFuture.get().getDocuments();
-//        List<Lecturer> lecturerList = new ArrayList<>();
-//        for (QueryDocumentSnapshot document : documentSnapshotList){
-//            Lecturer lecturer = document.toObject(Lecturer.class);
-//            lecturer.setId(document.getId());
-//            DocumentReference approvedStaffRef = (DocumentReference) document.get("approvedStaffRef");
-//            System.out.printf(approvedStaffRef.toString());
-//            Staff approvedStaff = approvedStaffRef.get().get().toObject(Staff.class);
-//            lecturer.setApprovedStaff(approvedStaff);
-//            lecturerList.add(lecturer);
-//        }
-//        return lecturerList;
-//    }
-//}
+package com.eQuor.backend.services;
+
+
+
+import com.eQuor.backend.dto.LecturerModuleDto;
+import com.eQuor.backend.dto.MobileInfoDto;
+import com.eQuor.backend.dto.StudentInfoDto;
+import com.eQuor.backend.dto.TestDTO;
+import com.eQuor.backend.models.*;
+import com.eQuor.backend.repositories.LecturerRegisterModuleRepository;
+import com.eQuor.backend.repositories.StudentRegisterModuleRepository;
+import com.eQuor.backend.repositories.StudentRepository;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
+import java.util.stream.Collectors;
+
+@Service
+@Transactional
+public class StaffService {
+    @Autowired
+    private LecturerRegisterModuleRepository lecturerrepository;
+
+    @Autowired
+    private StudentRegisterModuleRepository studentrepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
+
+    public List<LecturerRegisterModule>saveAllLecturers(List<LecturerRegisterModule> lecturerModules){
+
+        return lecturerrepository.saveAll(lecturerModules);
+    }
+
+    public List<StudentRegisterModule> saveAllStudents(List<StudentRegisterModule> studentModules){
+
+        return studentrepository.saveAll(studentModules);
+    }
+
+
+
+}
+

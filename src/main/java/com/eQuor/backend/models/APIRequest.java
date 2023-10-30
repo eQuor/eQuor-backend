@@ -16,7 +16,7 @@ public class APIRequest {
     @Id
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    String id;
     @Column(name="email")
     String email;
     @Column(name="action")
@@ -28,6 +28,6 @@ public class APIRequest {
     String status;
     @Column(name="address")
     String address;
-    @Column(name="managed_admin")
-    String managed_admin;
+//    @Column(name="managed_admin")
+//    String managed_admin;
 }
