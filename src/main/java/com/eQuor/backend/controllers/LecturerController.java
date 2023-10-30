@@ -24,4 +24,8 @@ public class LecturerController {
 
         return lecturerService.getattendancecont();
     }
+    @GetMapping("/online")
+    public List<OnlineStudentInfoDTO>  getAllOnlineStudentBySessionId(@RequestParam(name = "session_id") String session_id){
+        return lecturerService.getAllOnlineStudentBySessionId(Integer.parseInt(session_id));
+    }
 }
