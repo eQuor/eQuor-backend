@@ -1,6 +1,7 @@
 package com.eQuor.backend.services;
 
 
+import com.eQuor.backend.dto.GetSessionDTO;
 import com.eQuor.backend.dto.MobileInfoDto;
 import com.eQuor.backend.dto.StudentInfoDto;
 import com.eQuor.backend.dto.TestDTO;
@@ -26,6 +27,9 @@ public class StudentService {
 
     @Autowired
     private StudentRepository studentRepository;
+
+//    @Autowired
+//    private
 
     @Autowired
     private ModelMapper modelMapper;
@@ -87,6 +91,10 @@ public StudentInfoDto updateQr(Authentication authentication) {
 
     return studentInfoDto;
 }
+
+//public GetSessionDTO getSession(){
+//
+//}
 
 
 
