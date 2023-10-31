@@ -2,10 +2,7 @@ package com.eQuor.backend.services;
 
 
 
-import com.eQuor.backend.dto.LecturerModuleDto;
-import com.eQuor.backend.dto.MobileInfoDto;
-import com.eQuor.backend.dto.StudentInfoDto;
-import com.eQuor.backend.dto.TestDTO;
+import com.eQuor.backend.dto.*;
 import com.eQuor.backend.models.*;
 import com.eQuor.backend.repositories.LecturerRegisterModuleRepository;
 import com.eQuor.backend.repositories.LecturerRepository;
@@ -72,6 +69,20 @@ public class StaffService {
             lecturers.add(new LecturerModuleDto(name, email));
         }
         return lecturers;
+    }
+
+    @Autowired
+    private StudentRepository stuRepository;
+
+    public List<StudentModuleDto> getStudentsByModuleId(int moduleId) {
+        List<Object[]> results = stuRepository.findStudentsByModuleId(moduleId);
+        List<StudentModuleDto> students = new ArrayList<>();
+        for (Object[] result : results) {
+            String name = (String) result[0];
+            String email = (String) result[1];
+            students.add(new StudentModuleDto(name, email));
+        }
+        return students;
     }
 
 }
