@@ -26,4 +26,8 @@ public class Sessions {
     String session_name;
     @Column(name = "module_id")
     Integer module_id;
+    @Column(name = "qr_code")
+    String qrcode;
+
+
 }
