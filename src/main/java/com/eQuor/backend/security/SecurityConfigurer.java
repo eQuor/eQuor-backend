@@ -71,7 +71,7 @@ public class SecurityConfigurer   {
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeRequests(auth->auth
-                        .requestMatchers("/api/v1/auth/RegisterWithQR").permitAll()
+                        .requestMatchers("/api/v1/auth/RegisterWithQR", "/ws").permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer((oauth2) -> oauth2
                 .jwt(Customizer.withDefaults())

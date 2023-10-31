@@ -9,7 +9,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class GetSessionDTO {
-    Boolean isFound;
+public class StudentSessionDetails {
 
+    Integer id;
+    Integer requirement;
+    String start_time;
+    String end_time;
+    String session_name;
 }

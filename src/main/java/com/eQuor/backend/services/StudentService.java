@@ -1,13 +1,12 @@
 package com.eQuor.backend.services;
 
 
-import com.eQuor.backend.dto.GetSessionDTO;
-import com.eQuor.backend.dto.MobileInfoDto;
-import com.eQuor.backend.dto.StudentInfoDto;
-import com.eQuor.backend.dto.TestDTO;
-import com.eQuor.backend.models.Mobile;
-import com.eQuor.backend.models.Student;
-import com.eQuor.backend.models.Test;
+import com.eQuor.backend.dto.*;
+import com.eQuor.backend.models.*;
+import com.eQuor.backend.models.Sessions;
+import com.eQuor.backend.repositories.MobileRepository;
+import com.eQuor.backend.repositories.SessionRepository;
+import com.eQuor.backend.repositories.StudentHasSessionRepository;
 import com.eQuor.backend.repositories.StudentRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
+import java.util.List;
 
 @Service
 @Transactional
@@ -27,6 +29,15 @@ public class StudentService {
 
     @Autowired
     private StudentRepository studentRepository;
+
+    @Autowired
+    private MobileRepository mobileRepository;
+
+    @Autowired
+    private SessionRepository sessionRepository;
+
+    @Autowired
+    private StudentHasSessionRepository studentHasSessionRepository;
 
 //    @Autowired
 //    private
@@ -92,9 +103,133 @@ public StudentInfoDto updateQr(Authentication authentication) {
     return studentInfoDto;
 }
 
-//public GetSessionDTO getSession(){
-//
-//}
+public DeviceRegisterResponseDto registerStudentDevice(MobileInfoDto mobileDto, String username){
+    DeviceRegisterResponseDto deviceRegisterResponseDto = new DeviceRegisterResponseDto();
+    try {
+
+        //hashing
+        String mobileData = mobileDto.toString();
+        mobileData = mobileData + username;
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hash = digest.digest(mobileData.getBytes(StandardCharsets.UTF_8));
+        StringBuilder hexString = new StringBuilder();
+        for (byte b : hash) {
+            String hex = Integer.toHexString(0xff & b);
+            if (hex.length() == 1) hexString.append('0');
+            hexString.append(hex);
+        }
+        System.out.println(hexString.getClass());
+        String hex = hexString.toString();
+
+
+        Student student = this.studentRepository.findByUsername(username);
+        if(student==null){
+            deviceRegisterResponseDto.setIsRegistered(false);
+            deviceRegisterResponseDto.setError("Authentication error");
+        }
+        else {
+            if (student.getMobile_id() == null){
+                student.setMobile_id(hex);
+                Mobile mobile = new Mobile(hex, mobileDto.getDeviceName(),mobileDto.getOsVersion());
+                mobileRepository.save(mobile);
+                studentRepository.save(student);
+                deviceRegisterResponseDto.setIsRegistered(true);
+                deviceRegisterResponseDto.setError("Device registration complete!");
+            }
+            else if(student.getMobile_id().equals(hex)){
+                deviceRegisterResponseDto.setIsRegistered(true);
+                deviceRegisterResponseDto.setError("Already exists!");
+            }
+            else{
+                deviceRegisterResponseDto.setIsRegistered(false);
+                deviceRegisterResponseDto.setError("You cannot register multiple devices!");
+            }
+
+        }
+        return deviceRegisterResponseDto;
+
+
+    } catch (Exception e) {
+       e.printStackTrace();
+        deviceRegisterResponseDto.setIsRegistered(false);
+        deviceRegisterResponseDto.setError("Unexpected error occurred! Please try again..");
+        return deviceRegisterResponseDto;
+
+    }
+
+
+
+}
+
+public GetSessionDTO getSession(String userId, Integer sessionId){
+    System.out.println("Catched");
+    GetSessionDTO getSessionDTO = new GetSessionDTO();
+    System.out.println("Catched");
+//    getSessionDTO.setIsFound(true);
+//    getSessionDTO.setSessionDetails(studentSessionDetails);
+    StudentHasSessionPKey studentHasSessionPKey = new StudentHasSessionPKey(userId, sessionId);
+    StudentHasSession studentHasSession = studentHasSessionRepository.findUserById(userId, sessionId);
+    getSessionDTO.setIsFound(studentHasSession != null);
+    return getSessionDTO;
+
+}
+
+public MarkAttendanceResponseDto mark_attendance(MarkAttendanceRequestDto markAttendanceRequestDto, String userId){
+    System.out.println(markAttendanceRequestDto.getCodes());
+    System.out.println(markAttendanceRequestDto.getSessionId());
+    System.out.println(userId);
+    MarkAttendanceResponseDto markAttendanceResponseDto = new MarkAttendanceResponseDto(false, "Unknown Error occurred");
+
+    StudentHasSessionPKey studentHasSessionPKey = new StudentHasSessionPKey(userId, markAttendanceRequestDto.getSessionId());
+    StudentHasSession studentHasSession = studentHasSessionRepository.findByPkey(studentHasSessionPKey);
+    if (studentHasSession == null){
+        System.out.println("You don't have access for this session");
+    }
+    else{
+        System.out.println("session found");
+        Sessions session = sessionRepository.findSessionsById(markAttendanceRequestDto.getSessionId());
+        if (session == null){
+            System.out.println("Unexpected error happened!");
+        }
+        else{
+            System.out.println(session.getQr_code());
+            String[] strArray = session.getQr_code().substring(1, session.getQr_code().length()-1).split(", ");
+            List<Integer> integerList = new ArrayList<>();
+            for (String s : strArray) {
+                integerList.add(Integer.parseInt(s));
+            }
+            int matchCount = 0;
+            for (int i = 0; i < markAttendanceRequestDto.getCodes().size(); i++) {
+                System.out.println("Meka wed");
+                if (this.findValueInArray(markAttendanceRequestDto.getCodes().get(i), integerList)){
+                    integerList.remove(markAttendanceRequestDto.getCodes().get(i));
+                    matchCount++;
+                }
+            }
+            System.out.println(matchCount);
+            if (matchCount>7){
+                markAttendanceResponseDto.setIsMarked(true);
+                markAttendanceResponseDto.setError("Attendance marked!");
+            }
+            else{
+                markAttendanceResponseDto.setIsMarked(false);
+                markAttendanceResponseDto.setError("You have scanned only " + matchCount +  " matching QR Codes");
+            }
+        }
+    }
+    return markAttendanceResponseDto;
+}
+
+private Boolean findValueInArray(Integer value, List<Integer> list){
+    for (Integer integer : list) {
+        if (integer.equals(value)){
+            return true;
+        }
+
+
+    }
+    return false;
+}
 
 
 

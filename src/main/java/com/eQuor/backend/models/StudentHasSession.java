@@ -1,18 +1,25 @@
 package com.eQuor.backend.models;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.*;
 
-@Getter
-@Setter
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Entity
+@Getter
+@Setter
 @Table(name = "\"student_has_session\"")
 public class StudentHasSession {
 
-    String student_id;
-    Integer session_id;
+    @EmbeddedId
+    StudentHasSessionPKey pkey;
+
+    @Column(name = "is_joined")
+    Boolean is_joined;
+
+
 }

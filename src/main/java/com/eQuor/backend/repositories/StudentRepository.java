@@ -1,8 +1,10 @@
 package com.eQuor.backend.repositories;
 
+import com.eQuor.backend.dto.StudentSessionDetails;
 import com.eQuor.backend.models.Staff;
 import com.eQuor.backend.models.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
@@ -11,4 +13,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @CrossOrigin
 public interface StudentRepository extends JpaRepository<Student,Integer> {
     Student findByUsername(String username);
+
+
 }

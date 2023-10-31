@@ -51,6 +51,9 @@ public class Student {
     @Column(name = "token")
     String token;
 
+    @Column(name = "mobile_id")
+    String mobile_id;
+
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));

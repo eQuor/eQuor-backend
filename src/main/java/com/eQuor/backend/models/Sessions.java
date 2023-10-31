@@ -2,6 +2,9 @@ package com.eQuor.backend.models;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.boot.configurationprocessor.json.JSONArray;
+
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -26,4 +29,7 @@ public class Sessions {
     String session_name;
     @Column(name = "module_id")
     Integer module_id;
+
+    @Column(name = "qr_code")
+    String qr_code;
 }

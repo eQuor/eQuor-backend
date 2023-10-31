@@ -1,4 +1,4 @@
-package com.eQuor.backend.ChatModels;
+package com.eQuor.backend.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class IncomingMessage {
-    private String name;
+public class DeviceRegisterResponseDto {
+    private Boolean isRegistered;
+    private String error;
+
 }

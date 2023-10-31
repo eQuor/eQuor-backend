@@ -1,17 +1,15 @@
-package com.eQuor.backend.ChatModels;
+package com.eQuor.backend.dto;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class OutGoingMessage {
-    private String content;
-
-
-
+@Getter
+@Setter
+public class FindSessionDTO {
+    Integer session_id;
 }
