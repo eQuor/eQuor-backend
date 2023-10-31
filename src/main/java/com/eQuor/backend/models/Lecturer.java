@@ -1,5 +1,6 @@
 package com.eQuor.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.*;
@@ -42,7 +43,10 @@ public class Lecturer {
     @Column(name = "role")
     private Role role;
 
-
+    @JsonIgnore
+    public String getPassword() {
+        return password;
+    }
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));

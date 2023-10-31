@@ -6,11 +6,12 @@ import com.eQuor.backend.models.OnlineStudentInfo;
 import com.eQuor.backend.repositories.OnlineStudentInfoRepository;
 import com.eQuor.backend.repositories.StudentAttendSessionRepository;
 import com.eQuor.backend.repositories.StudentModuleRepository;
-import org.hibernate.mapping.List;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
