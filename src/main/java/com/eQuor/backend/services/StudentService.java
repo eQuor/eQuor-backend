@@ -2,6 +2,7 @@ package com.eQuor.backend.services;
 
 
 import com.eQuor.backend.dto.MobileInfoDto;
+import com.eQuor.backend.dto.StudentAttendanceStatDto;
 import com.eQuor.backend.dto.StudentInfoDto;
 import com.eQuor.backend.dto.TestDTO;
 import com.eQuor.backend.models.Mobile;
@@ -9,6 +10,7 @@ import com.eQuor.backend.models.Module;
 import com.eQuor.backend.models.Student;
 import com.eQuor.backend.models.Test;
 import com.eQuor.backend.repositories.ModuleRepository;
+import com.eQuor.backend.repositories.SessionRepository;
 import com.eQuor.backend.repositories.StudentModuleRepository;
 import com.eQuor.backend.repositories.StudentRepository;
 import org.modelmapper.ModelMapper;
@@ -27,6 +29,10 @@ import java.util.Random;
 @Service
 @Transactional
 public class StudentService {
+
+    @Autowired
+    private SessionRepository sessionRepository;
+
     @Autowired
     private  ModuleRepository moduleRepository;
 
@@ -97,6 +103,12 @@ public StudentInfoDto updateQr(Authentication authentication) {
         return moduleRepository.getStudentModuleByStudentId(userId);
 
 
+    }
+
+    public StudentAttendanceStatDto getStudentAttendanceStat(String userId,Integer moduleId){
+
+        return new StudentAttendanceStatDto(sessionRepository.countByModuleId(moduleId),
+                sessionRepository.countByMAttendance(userId, moduleId));
     }
 
 

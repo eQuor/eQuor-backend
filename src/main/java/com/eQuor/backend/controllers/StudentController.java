@@ -2,6 +2,7 @@ package com.eQuor.backend.controllers;
 
 
 import com.eQuor.backend.dto.MobileInfoDto;
+import com.eQuor.backend.dto.StudentAttendanceStatDto;
 import com.eQuor.backend.services.StudentService;
 import com.eQuor.backend.models.Module;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,15 @@ public class StudentController {
 
         return studentService.getStudentMd(userID);
 
+
+    }
+
+    @GetMapping("/getStudentAttendanceStat")
+    public StudentAttendanceStatDto getStudentAttendanceStat(@RequestHeader("Authorization") String token , @RequestParam(name = "module_id") Integer moduleId){
+        String jwt = token.split( " ")[1];
+        Jwt jwtTokens = jwtDecoder.decode(jwt);
+        String userID =jwtTokens.getClaims().get("userId").toString();
+        return studentService.getStudentAttendanceStat(userID, moduleId);
 
     }
 

@@ -29,5 +29,12 @@ public interface SessionRepository  extends JpaRepository<Sessions,Integer> {
     @Query(value = "SELECT * FROM \"session\" WHERE module_id = :moduleId", nativeQuery = true)
     List<Sessions> findByModuleId(@Param("moduleId") Integer moduleId);
 
+    @Query("SELECT COUNT(s) FROM Sessions s WHERE s.module_id = :moduleId")
+    Integer countByModuleId(@Param("moduleId") Integer moduleId);
+
+    @Query("SELECT COUNT(s) FROM Student_attend_session sat INNER JOIN Sessions s ON s.id = sat.id.session_id WHERE sat.id.student_id = :student_id AND s.module_id = :module_id")
+    Integer countByMAttendance(@Param("student_id") String student_id, @Param("module_id") Integer moduleId);
+
+
 
 }
