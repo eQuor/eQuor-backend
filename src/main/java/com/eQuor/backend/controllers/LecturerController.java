@@ -36,6 +36,7 @@ public class LecturerController {
         System.out.println("inside generateQr");
 
         return lecturerService.generateQrSequence(sessionId);
+    }
     @GetMapping("/getModules")
     public List<Module> getModule(){
         return lecturerService.getModules();

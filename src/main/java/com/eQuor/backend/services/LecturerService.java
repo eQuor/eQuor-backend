@@ -64,16 +64,17 @@ public class LecturerService {
 
         Sessions session = sessionRepository.findById(sessionId);
 
-        if(session != null){
+        if (session != null) {
             session.setQrcode(arrayStr);
             sessionRepository.save(session);
 
             return arrayStr;
-        }else{
+        } else {
             String str = "Invalid session id";
 
             return str;
         }
+    }
 
 
 

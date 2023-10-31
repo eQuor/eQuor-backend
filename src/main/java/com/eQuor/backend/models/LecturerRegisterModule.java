@@ -26,5 +26,5 @@ public class LecturerRegisterModule {
     @Column(name = "module_id")
     Integer module_id;
 
-    
+
 }
