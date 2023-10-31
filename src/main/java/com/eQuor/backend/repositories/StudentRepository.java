@@ -1,5 +1,6 @@
 package com.eQuor.backend.repositories;
 
+import com.eQuor.backend.models.Module;
 import com.eQuor.backend.models.Staff;
 import com.eQuor.backend.models.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
