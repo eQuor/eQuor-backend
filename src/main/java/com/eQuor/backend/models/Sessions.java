@@ -26,4 +26,12 @@ public class Sessions {
     String session_name;
     @Column(name = "module_id")
     Integer module_id;
+    @Column(name = "qr_code")
+    String qrcode;
+    @Column(name = "is_active")
+    Boolean is_active;
+    @Column(name = "session_date")
+    String session_date;
+
+
 }

@@ -8,10 +8,10 @@ import lombok.*;
 @Data
 @Getter
 @Setter
-public class LecturerModuleDto {
-//    String lecture_id;
+public class StudentModuleDto {
+    //    String lecture_id;
 //
 //    String module_id;
-     String name;
-     String email;
+    String name;
+    String email;
 }

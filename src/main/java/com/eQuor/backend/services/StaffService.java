@@ -2,14 +2,14 @@ package com.eQuor.backend.services;
 
 
 
-import com.eQuor.backend.dto.LecturerModuleDto;
-import com.eQuor.backend.dto.MobileInfoDto;
-import com.eQuor.backend.dto.StudentInfoDto;
-import com.eQuor.backend.dto.TestDTO;
+import com.eQuor.backend.dto.*;
 import com.eQuor.backend.models.*;
 import com.eQuor.backend.repositories.LecturerRegisterModuleRepository;
+import com.eQuor.backend.repositories.LecturerRepository;
 import com.eQuor.backend.repositories.StudentRegisterModuleRepository;
 import com.eQuor.backend.repositories.StudentRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -48,6 +48,42 @@ public class StaffService {
     }
 
 
+    //Getting all lectures for a module
+    @Autowired
+    private LecturerRepository lecturerRepository;
+
+    @Autowired
+    private LecturerRegisterModuleRepository lecturerRegisterModuleRepository;
+
+
+//    public List<LecturerModuleDto> getLecturersByModuleId(int moduleId) {
+//        return lecturerRepository.findLecturersByModuleId(moduleId);
+//    }
+
+    public List<LecturerModuleDto> getLecturersByModuleId(int moduleId) {
+        List<Object[]> results = lecturerRepository.findLecturersByModuleId(moduleId);
+        List<LecturerModuleDto> lecturers = new ArrayList<>();
+        for (Object[] result : results) {
+            String name = (String) result[0];
+            String email = (String) result[1];
+            lecturers.add(new LecturerModuleDto(name, email));
+        }
+        return lecturers;
+    }
+
+    @Autowired
+    private StudentRepository stuRepository;
+
+    public List<StudentModuleDto> getStudentsByModuleId(int moduleId) {
+        List<Object[]> results = stuRepository.findStudentsByModuleId(moduleId);
+        List<StudentModuleDto> students = new ArrayList<>();
+        for (Object[] result : results) {
+            String name = (String) result[0];
+            String email = (String) result[1];
+            students.add(new StudentModuleDto(name, email));
+        }
+        return students;
+    }
 
 }
 

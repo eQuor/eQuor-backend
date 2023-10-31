@@ -2,6 +2,8 @@ package com.eQuor.backend.controllers;
 
 
 import com.eQuor.backend.dto.LecturerModuleDto;
+import com.eQuor.backend.dto.StudentModuleDto;
+import com.eQuor.backend.models.Lecturer;
 import com.eQuor.backend.models.LecturerRegisterModule;
 import com.eQuor.backend.models.Module;
 import com.eQuor.backend.models.StudentRegisterModule;
@@ -55,6 +57,17 @@ public class StaffController {
 
         return staffService.saveAllStudents(studentModule);
     }
+
+    @GetMapping("/getLecbyModule/{moduleId}")
+    public List<LecturerModuleDto> getLecturersByModule(@PathVariable int moduleId) {
+        return staffService.getLecturersByModuleId(moduleId);
+    }
+
+    @GetMapping("/getStudentbyModule/{moduleId}")
+    public List<StudentModuleDto> getStudentsByModule(@PathVariable int moduleId) {
+        return staffService.getStudentsByModuleId(moduleId);
+    }
+
 
 
 }

@@ -61,17 +61,6 @@ public class AuthController {
         StudentInfoDto  studentInfoDto = studentService.updateQr(authentication);
 
 
-
-        //String token = authentication.getCredentials().toString();
-
-
-
-
-        //Pass created values to dto object
-//        StudentInfoDto studentInfoDto = new StudentInfoDto();
-//        studentInfoDto.setUserName(authentication.getName());
-//        studentInfoDto.setQrString(qrString);
-
         return studentInfoDto;
     }
 
