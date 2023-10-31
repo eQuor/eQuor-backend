@@ -7,8 +7,6 @@ import com.eQuor.backend.models.Module;
 import com.eQuor.backend.repositories.ModuleRepository;
 import com.eQuor.backend.repositories.StudentAttendSessionRepository;
 import com.eQuor.backend.repositories.StudentModuleRepository;
-import com.eQuor.backend.repositories.StudentRepository;
-import org.hibernate.Session;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -84,5 +82,16 @@ public class LecturerService {
        // return arrayStr;
     public List<Module> getModules(){
         return moduleRepository.getModuleByLecId("2020LEC123");
+    }
+
+
+    //GetAllSessions for a module
+//    public List<Sessions> getAllSessionsByModuleId(int moduleId) {
+//        return sessionRepository.findSessionsByModule_id(moduleId);
+//    }
+
+
+    public List<Sessions> getAllSessionsByModuleId(Integer moduleId) {
+        return sessionRepository.findByModuleId(moduleId);
     }
 }

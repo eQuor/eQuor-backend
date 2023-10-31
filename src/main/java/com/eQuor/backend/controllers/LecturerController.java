@@ -1,13 +1,12 @@
 package com.eQuor.backend.controllers;
 
 import com.eQuor.backend.dto.LecturerAttendaneStat;
-import com.eQuor.backend.dto.StudentModuleDto;
 import com.eQuor.backend.models.Module;
+import com.eQuor.backend.models.Sessions;
+import com.eQuor.backend.repositories.ModuleRepository;
 import com.eQuor.backend.services.LecturerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 import java.util.List;
 
@@ -41,4 +40,39 @@ public class LecturerController {
     public List<Module> getModule(){
         return lecturerService.getModules();
     }
+
+
+    //Get module details for a lecturer by giving the id
+
+    @Autowired
+    private ModuleRepository moduleRepository;
+    @GetMapping("/getModuleDetailsById/{moduleId}")
+    public Module getUserById(@PathVariable int moduleId){
+
+        Module module = moduleRepository.findById(moduleId);
+        return module;
+
+    }
+
+    //Get all sessions of a module by giving the module id
+//    @Autowired
+//
+//    private SessionService sessionService;
+
+//    @GetMapping("/getAllSessionDetailsByModuleId/{moduleId}")
+//    public List<Sessions> getAllSessionDetailsByModuleId(@PathVariable int moduleId){
+//        return lecturerService.getAllSessionsByModuleId(moduleId);
+//    }
+
+    //Get all sessions of a module by giving the module id
+
+
+    @GetMapping("/getAllSessionsDetailsByModuleId/{moduleId}")
+    public List<Sessions> getAllSessionsByModuleId(@PathVariable Integer moduleId) {
+        return lecturerService.getAllSessionsByModuleId(moduleId);
+    }
+
+
+
+
 }
