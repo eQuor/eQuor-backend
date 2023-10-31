@@ -1,22 +1,52 @@
 package com.eQuor.backend.models;
 
-import com.google.cloud.firestore.DocumentReference;
-import com.google.cloud.firestore.annotation.PropertyName;
-import com.google.firebase.database.Exclude;
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.persistence.*;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.math.BigInteger;
+import java.util.Collection;
+import java.util.List;
+
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 @Getter
 @Setter
-public class Staff {
+@Table(name = "\"staff_member\"")
+public class Staff{
+    @Id
+    @Column(name = "id")
+    @JsonInclude(JsonInclude.Include.ALWAYS)
     String id;
-    String Name;
-    String Email;
-    String Password;
-    String Username;
-    String Address;
+    @Column(name = "name")
+    String name;
+    @Column(name = "email")
+    String email;
+    @Column(name = "password")
+    String password;
+
+    @Column(name = "user_name")
+    String username;
+    @Column(name = "address")
+    String address;
 
 
-    Admin ApprovedAdmin;
+    @Column(name = "managed_admin")
+    String managedAdmin;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private Role role;
+
+
+
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
 
 }

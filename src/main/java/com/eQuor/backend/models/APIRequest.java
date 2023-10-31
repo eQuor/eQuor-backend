@@ -1,18 +1,33 @@
 package com.eQuor.backend.models;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
+import lombok.*;
+import org.springframework.data.rest.core.annotation.RestResource;
 
-@Setter
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 @Getter
+@Setter
+@Table(name = "\"api_request\"")
 public class APIRequest {
+    @Id
+    @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     String id;
-    String Email;
-    String Description;
-    String FullName;
-    String NIC;
+    @Column(name="email")
+    String email;
+    @Column(name="action")
+    String action;
+    @Column(name="full_name")
+    String full_name;
 
-    Integer AcceptStatus;
-    String Address;
-    Admin ApprovedAdmin;
+    @Column(name="status")
+    String status;
+    @Column(name="address")
+    String address;
+//    @Column(name="managed_admin")
+//    String managed_admin;
 }
