@@ -3,6 +3,8 @@ package com.eQuor.backend.services;
 import com.eQuor.backend.dto.LecturerAttendaneStat;
 import com.eQuor.backend.models.Sessions;
 import com.eQuor.backend.repositories.SessionRepository;
+import com.eQuor.backend.models.Module;
+import com.eQuor.backend.repositories.ModuleRepository;
 import com.eQuor.backend.repositories.StudentAttendSessionRepository;
 import com.eQuor.backend.repositories.StudentModuleRepository;
 import com.eQuor.backend.repositories.StudentRepository;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.Random;
+import java.util.List;
 
 @Service
 public class LecturerService {
@@ -25,6 +28,8 @@ public class LecturerService {
     private ModelMapper modelMapper;
 
 
+    @Autowired
+    private ModuleRepository moduleRepository;
 
     public LecturerAttendaneStat getattendancecont() {
         Long count = studentAttendSessionRepository.count();
@@ -76,5 +81,7 @@ public class LecturerService {
 
 
        // return arrayStr;
+    public List<Module> getModules(){
+        return moduleRepository.getModuleByLecId("2020LEC123");
     }
 }

@@ -2,9 +2,12 @@ package com.eQuor.backend.controllers;
 
 import com.eQuor.backend.dto.LecturerAttendaneStat;
 import com.eQuor.backend.dto.StudentModuleDto;
+import com.eQuor.backend.models.Module;
 import com.eQuor.backend.services.LecturerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import java.util.List;
 
@@ -33,5 +36,8 @@ public class LecturerController {
         System.out.println("inside generateQr");
 
         return lecturerService.generateQrSequence(sessionId);
+    @GetMapping("/getModules")
+    public List<Module> getModule(){
+        return lecturerService.getModules();
     }
 }
