@@ -1,10 +1,7 @@
 package com.eQuor.backend.models;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -19,7 +16,19 @@ import lombok.*;
 public class StudentRegisterModule {
 
 
+//    @Id
+//    @Column(name = "student_id")
+//    @JsonInclude(JsonInclude.Include.ALWAYS)
+//    String student_id;
+//
+//    @Column(name = "module_id")
+//    Integer module_id;
+
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(name = "student_id")
     @JsonInclude(JsonInclude.Include.ALWAYS)
     String student_id;
