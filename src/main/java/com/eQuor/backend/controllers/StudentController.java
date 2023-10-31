@@ -21,4 +21,6 @@ public class StudentController {
         jsonObject.put("name", "hihi");
         return jsonObject.toString();
     }
+
+
 }
