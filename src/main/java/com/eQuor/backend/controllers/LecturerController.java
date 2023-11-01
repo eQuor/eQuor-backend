@@ -2,8 +2,10 @@ package com.eQuor.backend.controllers;
 
 import com.eQuor.backend.dto.LecturerAttendaneStat;
 import com.eQuor.backend.dto.OnlineStudentInfoDTO;
+import com.eQuor.backend.dto.SessionAttendanceDto;
 import com.eQuor.backend.models.Module;
 import com.eQuor.backend.models.Sessions;
+import com.eQuor.backend.models.Student;
 import com.eQuor.backend.repositories.ModuleRepository;
 import com.eQuor.backend.services.LecturerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +77,12 @@ public class LecturerController {
     @GetMapping("/getAllSessionsDetailsByModuleId/{moduleId}")
     public List<Sessions> getAllSessionsByModuleId(@PathVariable Integer moduleId) {
         return lecturerService.getAllSessionsByModuleId(moduleId);
+    }
+
+    @GetMapping("/getSessionAttendance")
+    public List<SessionAttendanceDto> getSessionAttendance(@RequestParam(name = "session_id") Integer session_id){
+        return lecturerService.getSessionAttendance(session_id);
+
     }
 
 

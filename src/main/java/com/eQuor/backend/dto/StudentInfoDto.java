@@ -13,5 +13,4 @@ public class StudentInfoDto {
 
     String qrString;
 
-    String token;
 }
