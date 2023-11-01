@@ -1,0 +1,19 @@
+Find a value in array?
+String revers?
+Find the largest value?
+Finda the second largest value?
+find the minimum value?
+Sorting?
+	*Bubble
+	*Quick
+	*Selection
+	*Insertion
+	*Merge
+Star Pattern?
+
+OOP concepts?
+
+javascript DOM?
+React Vitual DOM?
+
+		

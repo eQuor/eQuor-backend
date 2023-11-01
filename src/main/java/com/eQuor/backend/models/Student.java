@@ -55,9 +55,9 @@ public class Student {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
     }
-    @PrePersist
-    public void prePersist() {
-        this.managedStaff = "2021STF021";
-    }
+//    @PrePersist
+//    public void prePersist() {
+//        this.managedStaff = "2021STF021";
+//    }
 
 }
