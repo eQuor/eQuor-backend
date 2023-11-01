@@ -20,6 +20,6 @@ public class St_attend implements Serializable {
     @Column(name = "student_id")
     String student_id;
     @Column(name = "session_id")
-    String session_id;
+    Integer session_id;
 
 }
