@@ -1,22 +1,16 @@
 package com.eQuor.backend.services;
 
 
-import com.eQuor.backend.dto.MobileInfoDto;
-import com.eQuor.backend.dto.StudentAttendanceStatDto;
-import com.eQuor.backend.dto.StudentInfoDto;
-import com.eQuor.backend.models.Mobile;
+import com.eQuor.backend.dto.*;
+import com.eQuor.backend.models.*;
 import com.eQuor.backend.models.Module;
-import com.eQuor.backend.models.Student;
-import com.eQuor.backend.repositories.MobileRepository;
-import com.eQuor.backend.repositories.ModuleRepository;
-import com.eQuor.backend.repositories.SessionRepository;
-import com.eQuor.backend.repositories.StudentRepository;
+import com.eQuor.backend.repositories.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.eQuor.backend.dto.DeviceRegisterResponseDto;
+
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -26,6 +20,9 @@ import java.util.Random;
 @Service
 @Transactional
 public class StudentService {
+
+    @Autowired
+    private StudentHasSessionRepository studentHasSessionRepository;
 
     @Autowired
     private MobileRepository mobileRepository;
@@ -184,6 +181,24 @@ public StudentInfoDto updateQr(Authentication authentication) {
 
 
     }
+
+
+
+
+    public GetSessionDTO getSession(String userId, Integer sessionId){
+        System.out.println("Catched");
+        GetSessionDTO getSessionDTO = new GetSessionDTO();
+        System.out.println("Catched");
+//    getSessionDTO.setIsFound(true);
+//    getSessionDTO.setSessionDetails(studentSessionDetails);
+        StudentHasSessionPKey studentHasSessionPKey = new StudentHasSessionPKey(userId, sessionId);
+        StudentHasSession studentHasSession = studentHasSessionRepository.findUserById(userId, sessionId);
+        getSessionDTO.setIsFound(studentHasSession != null);
+        return getSessionDTO;
+
+    }
+
+
 
 
 

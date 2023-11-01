@@ -2,6 +2,7 @@ package com.eQuor.backend.controllers;
 
 
 import com.eQuor.backend.dto.DeviceRegisterResponseDto;
+import com.eQuor.backend.dto.GetSessionDTO;
 import com.eQuor.backend.dto.MobileInfoDto;
 import com.eQuor.backend.dto.StudentAttendanceStatDto;
 import com.eQuor.backend.services.StudentService;
@@ -78,6 +79,20 @@ public class StudentController {
         String userID =jwtTokens.getClaims().get("userId").toString();
         return studentService.getStudentAttendanceStat(userID, moduleId);
 
+    }
+
+
+    @GetMapping("/get-session")
+    public GetSessionDTO getSession(@RequestHeader("Authorization") String token, @RequestParam("session_id") Integer sessionId){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        String jwt = token.split(" ")[1];
+        Jwt jwtToken = jwtDecoder.decode(jwt);
+        String userId = jwtToken.getClaims().get("userId").toString();
+        System.out.println(userId);
+        return studentService.getSession(userId, sessionId);
+
+//        return studentService.getSession();
     }
 
 
