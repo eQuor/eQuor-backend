@@ -4,26 +4,22 @@ package com.eQuor.backend.services;
 import com.eQuor.backend.dto.MobileInfoDto;
 import com.eQuor.backend.dto.StudentAttendanceStatDto;
 import com.eQuor.backend.dto.StudentInfoDto;
-import com.eQuor.backend.dto.TestDTO;
 import com.eQuor.backend.models.Mobile;
 import com.eQuor.backend.models.Module;
 import com.eQuor.backend.models.Student;
-import com.eQuor.backend.models.Test;
 import com.eQuor.backend.repositories.ModuleRepository;
 import com.eQuor.backend.repositories.SessionRepository;
-import com.eQuor.backend.repositories.StudentModuleRepository;
 import com.eQuor.backend.repositories.StudentRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import com.eQuor.backend.dto.DeviceRegisterResponseDto;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -32,6 +28,8 @@ public class StudentService {
 
     @Autowired
     private SessionRepository sessionRepository;
+
+
 
     @Autowired
     private  ModuleRepository moduleRepository;
@@ -110,6 +108,65 @@ public StudentInfoDto updateQr(Authentication authentication) {
         return new StudentAttendanceStatDto(sessionRepository.countByModuleId(moduleId),
                 sessionRepository.countByMAttendance(userId, moduleId));
     }
+
+    public DeviceRegisterResponseDto registerStudentDevice(MobileInfoDto mobileDto, String username){
+        DeviceRegisterResponseDto deviceRegisterResponseDto = new DeviceRegisterResponseDto();
+        try {
+
+            //hashing
+            String mobileData = mobileDto.toString();
+            mobileData = mobileData + username;
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(mobileData.getBytes(StandardCharsets.UTF_8));
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+            System.out.println(hexString.getClass());
+            String hex = hexString.toString();
+
+
+            Student student = this.studentRepository.findByUsername(username);
+            if(student==null){
+                deviceRegisterResponseDto.setIsRegistered(false);
+                deviceRegisterResponseDto.setError("Authentication error");
+            }
+            else {
+                if (student.getMobile_id() == null){
+                    student.setMobile_id(hex);
+                    Mobile mobile = new Mobile(hex, mobileDto.getDeviceName(),mobileDto.getOsVersion());
+                    mobileRepository.save(mobile);
+                    studentRepository.save(student);
+                    deviceRegisterResponseDto.setIsRegistered(true);
+                    deviceRegisterResponseDto.setError("Device registration complete!");
+                }
+                else if(student.getMobile_id().equals(hex)){
+                    deviceRegisterResponseDto.setIsRegistered(true);
+                    deviceRegisterResponseDto.setError("Already exists!");
+                }
+                else{
+                    deviceRegisterResponseDto.setIsRegistered(false);
+                    deviceRegisterResponseDto.setError("You cannot register multiple devices!");
+                }
+
+            }
+            return deviceRegisterResponseDto;
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            deviceRegisterResponseDto.setIsRegistered(false);
+            deviceRegisterResponseDto.setError("Unexpected error occurred! Please try again..");
+            return deviceRegisterResponseDto;
+
+        }
+
+
+
+    }
+
 
 
 

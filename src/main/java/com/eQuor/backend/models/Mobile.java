@@ -17,15 +17,14 @@ import java.math.BigInteger;
 public class Mobile {
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    BigInteger id;
+    String id;
 
-    @Column(name = "model_name")
-    String model_name;
-    @Column(name = "model_number")
-    String model_number;
-    @Column(name = "imei")
-    String imei;
+    @Column(name = "device_name")
+    String device_name;
+
+    @Column(name = "os")
+    String os;
+
 
 
 }
