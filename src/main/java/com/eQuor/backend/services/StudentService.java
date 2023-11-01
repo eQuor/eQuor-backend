@@ -7,6 +7,7 @@ import com.eQuor.backend.dto.StudentInfoDto;
 import com.eQuor.backend.models.Mobile;
 import com.eQuor.backend.models.Module;
 import com.eQuor.backend.models.Student;
+import com.eQuor.backend.repositories.MobileRepository;
 import com.eQuor.backend.repositories.ModuleRepository;
 import com.eQuor.backend.repositories.SessionRepository;
 import com.eQuor.backend.repositories.StudentRepository;
@@ -25,6 +26,9 @@ import java.util.Random;
 @Service
 @Transactional
 public class StudentService {
+
+    @Autowired
+    private MobileRepository mobileRepository;
 
     @Autowired
     private SessionRepository sessionRepository;
@@ -88,7 +92,7 @@ public StudentInfoDto updateQr(Authentication authentication) {
     StudentInfoDto studentInfoDto = new StudentInfoDto();
     studentInfoDto.setUserName(authentication.getName());
     studentInfoDto.setQrString(hexString.toString());
-    studentInfoDto.setToken(token);
+
 
 
 
@@ -129,11 +133,25 @@ public StudentInfoDto updateQr(Authentication authentication) {
 
 
             Student student = this.studentRepository.findByUsername(username);
+
+
+
+
+            //check is registered
             if(student==null){
                 deviceRegisterResponseDto.setIsRegistered(false);
                 deviceRegisterResponseDto.setError("Authentication error");
             }
             else {
+                //check is it the correct QR
+                String savedQr = student.getQrCode();
+                if (!savedQr.equals(mobileDto.getScannedQR())){
+                    deviceRegisterResponseDto.setIsRegistered(false);
+                    deviceRegisterResponseDto.setError("Please scan your correct eQuor QR Code");
+                    return deviceRegisterResponseDto;
+                }
+
+
                 if (student.getMobile_id() == null){
                     student.setMobile_id(hex);
                     Mobile mobile = new Mobile(hex, mobileDto.getDeviceName(),mobileDto.getOsVersion());

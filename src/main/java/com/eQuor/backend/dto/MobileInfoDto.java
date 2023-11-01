@@ -8,6 +8,7 @@ import lombok.*;
 @Getter
 @Setter
 public class MobileInfoDto {
+    String scannedQR;
     String brand;
 
     String deviceName;
