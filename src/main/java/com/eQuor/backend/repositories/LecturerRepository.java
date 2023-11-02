@@ -27,4 +27,6 @@ public interface LecturerRepository extends JpaRepository<Lecturer,String> {
     List<Object[]> findLecturersByModuleId(@Param("moduleId") int moduleId);
 
 
+
+
 }

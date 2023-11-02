@@ -5,10 +5,11 @@ import com.eQuor.backend.dto.OnlineStudentInfoDTO;
 import com.eQuor.backend.dto.SessionAttendanceDto;
 import com.eQuor.backend.models.Module;
 import com.eQuor.backend.models.Sessions;
-import com.eQuor.backend.models.Student;
 import com.eQuor.backend.repositories.ModuleRepository;
 import com.eQuor.backend.services.LecturerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +23,12 @@ public class LecturerController {
     @Autowired
     private LecturerService lecturerService;
 
+    @Autowired
+    private  final JwtDecoder jwtDecoder;
+
+    public LecturerController(JwtDecoder jwtDecoder) {
+        this.jwtDecoder = jwtDecoder;
+    }
 
     @GetMapping("/studentAttendSession/")
 
@@ -85,7 +92,15 @@ public class LecturerController {
 
     }
 
+    @GetMapping("/lectureByModuleDetails")
+    public List<Module> lectureByModuleDetails(@RequestHeader("Authorization") String token) {
 
+        String jwt = token.split( " ")[1];
+        Jwt jwtTokens = jwtDecoder.decode(jwt);
+        String userID =jwtTokens.getClaims().get("userId").toString();
+
+        return lecturerService.getAllSessionsByLectureId(userID);
+    }
 
 
 }

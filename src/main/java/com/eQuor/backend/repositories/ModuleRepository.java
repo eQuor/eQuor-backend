@@ -24,4 +24,7 @@ public interface ModuleRepository extends JpaRepository<Module,Integer> {
     @Query(value = "SELECT m FROM StudentRegisterModule l INNER JOIN Module m on l.module_id = m.id where l.student_id = :student_id")
     List<Module> getStudentModuleByStudentId(@Param("student_id") String student_id );
 
+    @Query("SELECT m FROM LecturerRegisterModule lm INNER JOIN Module m ON m.id =lm.module_id WHERE lm.lecturer_id = :lecture_id")
+    List<Module> lectureByModule(@Param("lecture_id") String lecture_id);
+
 }

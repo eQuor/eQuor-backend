@@ -27,6 +27,8 @@ public class LecturerService {
     private StudentModuleRepository studentModuleRepository;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private LecturerRepository lecturerRepository;
 
     @Autowired
     private StudentRepository studentRepository;
@@ -117,5 +119,9 @@ public class LecturerService {
             returnArray.add(sessionAttendanceDto);
         }
         return returnArray;
+    }
+
+    public List<Module> getAllSessionsByLectureId(String lectureId) {
+        return moduleRepository.lectureByModule(lectureId);
     }
 }
