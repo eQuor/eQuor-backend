@@ -3,11 +3,9 @@ package com.eQuor.backend.services;
 import com.eQuor.backend.dto.LecturerAttendaneStat;
 import com.eQuor.backend.dto.OnlineStudentInfoDTO;
 import com.eQuor.backend.dto.SessionAttendanceDto;
-import com.eQuor.backend.models.OnlineStudentInfo;
-import com.eQuor.backend.models.Student;
-import com.eQuor.backend.repositories.*;
-import com.eQuor.backend.models.Sessions;
+import com.eQuor.backend.models.*;
 import com.eQuor.backend.models.Module;
+import com.eQuor.backend.repositories.*;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +21,13 @@ public class LecturerService {
 
     @Autowired
     private StudentAttendSessionRepository studentAttendSessionRepository;
+
+    @Autowired
+    StudentRegisterModuleRepository studentRegisterModuleRepository;
+
+    @Autowired
+    StudentHasSessionRepository studentHasSessionRepository;
+
     @Autowired
     private StudentModuleRepository studentModuleRepository;
     @Autowired
@@ -125,6 +130,7 @@ public class LecturerService {
             // Handle the case where no session with the given ID was found
             return "Invalid Session id";
         }
+    }
     public List<SessionAttendanceDto> getSessionAttendance(Integer sessionId){
         List<Student> studentList =  studentRepository.findStudentsSession(sessionId);
         List<SessionAttendanceDto> returnArray= new ArrayList<>();
@@ -137,5 +143,24 @@ public class LecturerService {
 
     public List<Module> getAllSessionsByLectureId(String lectureId) {
         return moduleRepository.lectureByModule(lectureId);
+    }
+
+
+
+    public Sessions createSession(Sessions session){
+
+
+        Sessions newSession =  sessionRepository.save(session);
+        List<StudentRegisterModule> studentRegisterModules = studentRegisterModuleRepository.findbyModuleId(session.getModule_id());
+        System.out.println(studentRegisterModules.size());
+        for (int i = 0; i < studentRegisterModules.size(); i++) {
+            StudentHasSessionPKey studentHasSessionPKey = new StudentHasSessionPKey(studentRegisterModules.get(i).getStudent_id(), newSession.getId());
+
+            StudentHasSession studentHasSession = new StudentHasSession(studentHasSessionPKey, false);
+
+            studentHasSessionRepository.save(studentHasSession);
+        }
+        return newSession;
+
     }
 }

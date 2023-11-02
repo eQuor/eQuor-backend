@@ -118,4 +118,11 @@ public class LecturerController {
     }
 
 
+    @PostMapping("/createSession")
+    public Sessions createSession(@RequestBody Sessions session){
+        System.out.println(session.getModule_id());
+        return lecturerService.createSession(session);
+    }
+
+
 }

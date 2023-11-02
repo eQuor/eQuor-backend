@@ -43,10 +43,8 @@ public class Lecturer {
     @Column(name = "role")
     private Role role;
 
-    @JsonIgnore
-    public String getPassword() {
-        return password;
-    }
+
+
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
