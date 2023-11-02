@@ -25,4 +25,8 @@ public interface LecturerRepository extends JpaRepository<Lecturer,String> {
 
     @Query(value = "SELECT l.name, l.email FROM lecturer l INNER JOIN lecturer_register_module lrm ON l.id = lrm.lecturer_id WHERE lrm.module_id = :moduleId", nativeQuery = true)
     List<Object[]> findLecturersByModuleId(@Param("moduleId") int moduleId);
+
+
+
+
 }

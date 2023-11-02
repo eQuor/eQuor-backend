@@ -36,6 +36,8 @@ public class Student {
     String username;
     @Column(name = "address")
     String address;
+    @Column(name = "index_no")
+    String indexNo;
 
 
     @Column(name = "managed_staff")
@@ -50,6 +52,9 @@ public class Student {
 
     @Column(name = "token")
     String token;
+
+    @Column(name = "mobile_id")
+    String mobile_id;
 
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
