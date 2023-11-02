@@ -36,6 +36,8 @@ public class Student {
     String username;
     @Column(name = "address")
     String address;
+    @Column(name = "index_no")
+    String indexNo;
 
 
     @Column(name = "managed_staff")
