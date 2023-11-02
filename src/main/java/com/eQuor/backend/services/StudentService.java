@@ -26,6 +26,9 @@ public class StudentService {
     private StudentHasSessionRepository studentHasSessionRepository;
 
     @Autowired
+    private StudentAttendSessionRepository studentAttendSessionRepository;
+
+    @Autowired
     private MobileRepository mobileRepository;
 
     @Autowired
@@ -222,6 +225,7 @@ public StudentInfoDto updateQr(Authentication authentication) {
                 System.out.println("Unexpected error happened!");
             }
             else{
+                System.out.println(session);
                 System.out.println(session.getQr_code());
                 String[] strArray = session.getQr_code().substring(1, session.getQr_code().length()-1).split(", ");
                 List<Integer> integerList = new ArrayList<>();
@@ -237,9 +241,13 @@ public StudentInfoDto updateQr(Authentication authentication) {
                     }
                 }
                 System.out.println(matchCount);
-                if (matchCount>7){
+                if (matchCount>6){
                     markAttendanceResponseDto.setIsMarked(true);
                     markAttendanceResponseDto.setError("Attendance marked!");
+                    Student_attend_session studentAttendSession = new Student_attend_session();
+                    St_attend stAttend = new St_attend(userId, markAttendanceRequestDto.getSessionId());
+                    studentAttendSession.setId(stAttend);
+                    studentAttendSessionRepository.save(studentAttendSession);
                 }
                 else{
                     markAttendanceResponseDto.setIsMarked(false);

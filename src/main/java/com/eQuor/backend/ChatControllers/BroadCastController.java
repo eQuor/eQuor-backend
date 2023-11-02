@@ -20,14 +20,17 @@ public class BroadCastController {
 
     @MessageMapping("/hello")
     @SendTo("/topic/hello")
-    public OutGoingMessage broadCastMessage(IncomingMessage message){
+    public IncomingMessage broadCastMessage(IncomingMessage message){
         System.out.println("message received");
-        return new OutGoingMessage("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!");
+
+
+        return message;
     }
 
-//    @MessageMapping("/session_chat")
-//    public OutGoingMessage privateMessage(IncomingMessage message){
-//        simpleMessagingTemplate.convertAndSendToUser();
-//    }
+    @MessageMapping("/session_chat")
+    public IncomingMessage privateMessage(IncomingMessage message){
+        simpleMessagingTemplate.convertAndSendToUser(message.getReceiver(), "/private", message);
+        return message;
+    }
 
 }

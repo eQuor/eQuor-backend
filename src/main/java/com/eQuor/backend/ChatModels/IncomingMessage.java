@@ -11,4 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class IncomingMessage {
     private String name;
+
+    private String message;
+    private  String receiver;
 }
