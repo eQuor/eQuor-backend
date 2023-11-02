@@ -125,6 +125,7 @@ public class LecturerService {
             // Handle the case where no session with the given ID was found
             return "Invalid Session id";
         }
+    }
     public List<SessionAttendanceDto> getSessionAttendance(Integer sessionId){
         List<Student> studentList =  studentRepository.findStudentsSession(sessionId);
         List<SessionAttendanceDto> returnArray= new ArrayList<>();
