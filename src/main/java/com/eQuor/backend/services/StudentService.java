@@ -1,16 +1,10 @@
 package com.eQuor.backend.services;
 
 
-import com.eQuor.backend.dto.MobileInfoDto;
-import com.eQuor.backend.dto.StudentInfoDto;
-import com.eQuor.backend.dto.TestDTO;
-import com.eQuor.backend.models.Mobile;
+import com.eQuor.backend.dto.*;
+import com.eQuor.backend.models.*;
 import com.eQuor.backend.models.Module;
-import com.eQuor.backend.models.Student;
-import com.eQuor.backend.models.Test;
-import com.eQuor.backend.repositories.ModuleRepository;
-import com.eQuor.backend.repositories.StudentModuleRepository;
-import com.eQuor.backend.repositories.StudentRepository;
+import com.eQuor.backend.repositories.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -21,12 +15,23 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 @Service
 @Transactional
 public class StudentService {
+
+    @Autowired
+    private StudentHasSessionRepository studentHasSessionRepository;
+
+    @Autowired
+    private MobileRepository mobileRepository;
+
+    @Autowired
+    private SessionRepository sessionRepository;
+
+
+
     @Autowired
     private  ModuleRepository moduleRepository;
 
@@ -84,7 +89,7 @@ public StudentInfoDto updateQr(Authentication authentication) {
     StudentInfoDto studentInfoDto = new StudentInfoDto();
     studentInfoDto.setUserName(authentication.getName());
     studentInfoDto.setQrString(hexString.toString());
-    studentInfoDto.setToken(token);
+
 
 
 
@@ -98,6 +103,103 @@ public StudentInfoDto updateQr(Authentication authentication) {
 
 
     }
+
+    public StudentAttendanceStatDto getStudentAttendanceStat(String userId,Integer moduleId){
+
+        return new StudentAttendanceStatDto(sessionRepository.countByModuleId(moduleId),
+                sessionRepository.countByMAttendance(userId, moduleId));
+    }
+
+    public DeviceRegisterResponseDto registerStudentDevice(MobileInfoDto mobileDto, String username){
+        DeviceRegisterResponseDto deviceRegisterResponseDto = new DeviceRegisterResponseDto();
+        try {
+
+            //hashing
+            String mobileData = mobileDto.toString();
+            mobileData = mobileData + username;
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(mobileData.getBytes(StandardCharsets.UTF_8));
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+            System.out.println(hexString.getClass());
+            String hex = hexString.toString();
+
+
+            Student student = this.studentRepository.findByUsername(username);
+
+
+
+
+            //check is registered
+            if(student==null){
+                deviceRegisterResponseDto.setIsRegistered(false);
+                deviceRegisterResponseDto.setError("Authentication error");
+            }
+            else {
+                //check is it the correct QR
+                String savedQr = student.getQrCode();
+                if (!savedQr.equals(mobileDto.getScannedQR())){
+                    deviceRegisterResponseDto.setIsRegistered(false);
+                    deviceRegisterResponseDto.setError("Please scan your correct eQuor QR Code");
+                    return deviceRegisterResponseDto;
+                }
+
+
+                if (student.getMobile_id() == null){
+                    student.setMobile_id(hex);
+                    Mobile mobile = new Mobile(hex, mobileDto.getDeviceName(),mobileDto.getOsVersion());
+                    mobileRepository.save(mobile);
+                    studentRepository.save(student);
+                    deviceRegisterResponseDto.setIsRegistered(true);
+                    deviceRegisterResponseDto.setError("Device registration complete!");
+                }
+                else if(student.getMobile_id().equals(hex)){
+                    deviceRegisterResponseDto.setIsRegistered(true);
+                    deviceRegisterResponseDto.setError("Already exists!");
+                }
+                else{
+                    deviceRegisterResponseDto.setIsRegistered(false);
+                    deviceRegisterResponseDto.setError("You cannot register multiple devices!");
+                }
+
+            }
+            return deviceRegisterResponseDto;
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            deviceRegisterResponseDto.setIsRegistered(false);
+            deviceRegisterResponseDto.setError("Unexpected error occurred! Please try again..");
+            return deviceRegisterResponseDto;
+
+        }
+
+
+
+    }
+
+
+
+
+    public GetSessionDTO getSession(String userId, Integer sessionId){
+        System.out.println("Catched");
+        GetSessionDTO getSessionDTO = new GetSessionDTO();
+        System.out.println("Catched");
+//    getSessionDTO.setIsFound(true);
+//    getSessionDTO.setSessionDetails(studentSessionDetails);
+        StudentHasSessionPKey studentHasSessionPKey = new StudentHasSessionPKey(userId, sessionId);
+        StudentHasSession studentHasSession = studentHasSessionRepository.findUserById(userId, sessionId);
+        getSessionDTO.setIsFound(studentHasSession != null);
+        return getSessionDTO;
+
+    }
+
+
+
 
 
 

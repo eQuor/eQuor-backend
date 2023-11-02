@@ -2,14 +2,12 @@ package com.eQuor.backend.services;
 
 import com.eQuor.backend.dto.LecturerAttendaneStat;
 import com.eQuor.backend.dto.OnlineStudentInfoDTO;
+import com.eQuor.backend.dto.SessionAttendanceDto;
 import com.eQuor.backend.models.OnlineStudentInfo;
-import com.eQuor.backend.repositories.OnlineStudentInfoRepository;
+import com.eQuor.backend.models.Student;
+import com.eQuor.backend.repositories.*;
 import com.eQuor.backend.models.Sessions;
-import com.eQuor.backend.repositories.SessionRepository;
 import com.eQuor.backend.models.Module;
-import com.eQuor.backend.repositories.ModuleRepository;
-import com.eQuor.backend.repositories.StudentAttendSessionRepository;
-import com.eQuor.backend.repositories.StudentModuleRepository;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +27,9 @@ public class LecturerService {
     private StudentModuleRepository studentModuleRepository;
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private StudentRepository studentRepository;
 
 
     @Autowired
@@ -122,5 +123,13 @@ public class LecturerService {
             // Handle the case where no session with the given ID was found
             return "Invalid Session id";
         }
+    public List<SessionAttendanceDto> getSessionAttendance(Integer sessionId){
+        List<Student> studentList =  studentRepository.findStudentsSession(sessionId);
+        List<SessionAttendanceDto> returnArray= new ArrayList<>();
+        for (Student student : studentList) {
+            SessionAttendanceDto sessionAttendanceDto = modelMapper.map(student, SessionAttendanceDto.class);
+            returnArray.add(sessionAttendanceDto);
+        }
+        return returnArray;
     }
 }

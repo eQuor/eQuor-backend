@@ -20,4 +20,7 @@ public interface StudentRepository extends JpaRepository<Student,Long> {
     @Query(value = "SELECT s.name, s.email FROM student s INNER JOIN student_register_modules srm ON s.id = srm.student_id WHERE srm.module_id = :moduleId", nativeQuery = true)
     List<Object[]> findStudentsByModuleId(@Param("moduleId") int moduleId);
 
+    @Query(value = "SELECT s from Student  s INNER JOIN Student_attend_session  srm on s.id = srm.id.student_id WHERE srm.id.session_id = :sessionId")
+    List<Student> findStudentsSession(@Param("sessionId")Integer sessionId);
+
 }
