@@ -19,6 +19,7 @@ public interface SessionRepository  extends JpaRepository<Sessions,Integer> {
 //    @Query()
 //    String insertQrSequence(@Param("moduleId") int moduleId);
     Sessions findById(int id);
+    Sessions findSessionsById(Integer id);
 
 //    List<Sessions> findByModule_id(int id);
 

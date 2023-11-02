@@ -4,6 +4,8 @@ package com.eQuor.backend.controllers;
 import com.eQuor.backend.dto.DeviceRegisterResponseDto;
 import com.eQuor.backend.dto.GetSessionDTO;
 import com.eQuor.backend.dto.MobileInfoDto;
+import com.eQuor.backend.dto.MarkAttendanceRequestDto;
+import com.eQuor.backend.dto.MarkAttendanceResponseDto;
 import com.eQuor.backend.dto.StudentAttendanceStatDto;
 import com.eQuor.backend.services.StudentService;
 import com.eQuor.backend.models.Module;
@@ -94,6 +96,16 @@ public class StudentController {
 
 //        return studentService.getSession();
     }
+
+    @PostMapping("/mark-attendance")
+    public MarkAttendanceResponseDto markAttendance(@RequestHeader("Authorization") String token,@RequestBody MarkAttendanceRequestDto markAttendanceRequestDto){
+        System.out.println(markAttendanceRequestDto.getCodes());
+        String jwt = token.split(" ")[1];
+        Jwt jwtToken = jwtDecoder.decode(jwt);
+        String userId = jwtToken.getClaims().get("userId").toString();
+        return studentService.mark_attendance(markAttendanceRequestDto, userId);
+    }
+
 
 
 

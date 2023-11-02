@@ -79,7 +79,7 @@ public class LecturerService {
         Sessions session = sessionRepository.findById(sessionId);
 
         if (session != null) {
-            session.setQrcode(arrayStr);
+            session.setQr_code(arrayStr);
             sessionRepository.save(session);
 
             return arrayStr;

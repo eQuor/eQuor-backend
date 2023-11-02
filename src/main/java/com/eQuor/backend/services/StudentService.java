@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -23,6 +24,9 @@ public class StudentService {
 
     @Autowired
     private StudentHasSessionRepository studentHasSessionRepository;
+
+    @Autowired
+    private StudentAttendSessionRepository studentAttendSessionRepository;
 
     @Autowired
     private MobileRepository mobileRepository;
@@ -196,6 +200,79 @@ public StudentInfoDto updateQr(Authentication authentication) {
         getSessionDTO.setIsFound(studentHasSession != null);
         return getSessionDTO;
 
+    }
+
+
+
+
+
+
+    public MarkAttendanceResponseDto mark_attendance(MarkAttendanceRequestDto markAttendanceRequestDto, String userId){
+        System.out.println(markAttendanceRequestDto.getCodes());
+        System.out.println(markAttendanceRequestDto.getSessionId());
+        System.out.println(userId);
+        MarkAttendanceResponseDto markAttendanceResponseDto = new MarkAttendanceResponseDto(false, "Unknown Error occurred");
+
+        StudentHasSessionPKey studentHasSessionPKey = new StudentHasSessionPKey(userId, markAttendanceRequestDto.getSessionId());
+        StudentHasSession studentHasSession = studentHasSessionRepository.findByPkey(studentHasSessionPKey);
+        if (studentHasSession == null){
+            System.out.println("You don't have access for this session");
+        }
+        else{
+            System.out.println("session found");
+            Sessions session = sessionRepository.findSessionsById(markAttendanceRequestDto.getSessionId());
+            if (session == null){
+                System.out.println("Unexpected error happened!");
+            }
+            else{
+                System.out.println(session);
+                System.out.println(session.getQr_code());
+                String[] strArray = session.getQr_code().substring(1, session.getQr_code().length()-1).split(", ");
+                List<Integer> integerList = new ArrayList<>();
+                for (String s : strArray) {
+                    integerList.add(Integer.parseInt(s));
+                }
+                int matchCount = 0;
+                for (int i = 0; i < markAttendanceRequestDto.getCodes().size(); i++) {
+                    System.out.println("Meka wed");
+                    if (this.findValueInArray(markAttendanceRequestDto.getCodes().get(i), integerList)){
+                        integerList.remove(markAttendanceRequestDto.getCodes().get(i));
+                        matchCount++;
+                    }
+                }
+                System.out.println(matchCount);
+                if (matchCount>6){
+                    markAttendanceResponseDto.setIsMarked(true);
+                    markAttendanceResponseDto.setError("Attendance marked!");
+                    Student_attend_session studentAttendSession = new Student_attend_session();
+                    St_attend stAttend = new St_attend(userId, markAttendanceRequestDto.getSessionId());
+                    studentAttendSession.setId(stAttend);
+                    studentAttendSessionRepository.save(studentAttendSession);
+                }
+                else{
+                    markAttendanceResponseDto.setIsMarked(false);
+                    markAttendanceResponseDto.setError("You have scanned only " + matchCount +  " matching QR Codes");
+                }
+            }
+        }
+        return markAttendanceResponseDto;
+    }
+
+
+
+
+
+
+
+    private Boolean findValueInArray(Integer value, List<Integer> list){
+        for (Integer integer : list) {
+            if (integer.equals(value)){
+                return true;
+            }
+
+
+        }
+        return false;
     }
 
 
