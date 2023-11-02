@@ -29,7 +29,7 @@ public class Sessions {
     @Column(name = "qr_code")
     String qrcode;
     @Column(name = "is_active")
-    Boolean is_active;
+    Boolean isactive;
     @Column(name = "session_date")
     String session_date;
 

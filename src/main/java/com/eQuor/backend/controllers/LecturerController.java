@@ -5,11 +5,13 @@ import com.eQuor.backend.dto.OnlineStudentInfoDTO;
 import com.eQuor.backend.models.Module;
 import com.eQuor.backend.models.Sessions;
 import com.eQuor.backend.repositories.ModuleRepository;
+import com.eQuor.backend.repositories.SessionRepository;
 import com.eQuor.backend.services.LecturerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/api/v1/lecture")
@@ -78,6 +80,19 @@ public class LecturerController {
     }
 
 
+
+    @Autowired
+    private SessionRepository sessionRepository;
+    @GetMapping("/getSessionDetailsBySessionId/{sessionId}")
+    public Optional<Sessions> getSessionDetailsBySessionId(@PathVariable Integer sessionId) {
+        return sessionRepository.findById(sessionId);
+    }
+
+
+    @PostMapping("/setSessionToEnd/{sessionId}")
+    public String setSessionToEnd(@PathVariable Integer sessionId){
+        return  lecturerService.setSessionToEnd(sessionId);
+    }
 
 
 }

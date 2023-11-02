@@ -15,11 +15,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
-import java.util.Arrays;
-import java.util.Random;
 import java.util.List;
 
 @Service
@@ -108,5 +106,21 @@ public class LecturerService {
 
     public List<Sessions> getAllSessionsByModuleId(Integer moduleId) {
         return sessionRepository.findByModuleId(moduleId);
+    }
+
+
+
+    public String setSessionToEnd(Integer sessionId) {
+        Optional<Sessions> sessionOptional = sessionRepository.findById(sessionId);
+        if (sessionOptional.isPresent()) {
+            Sessions session = sessionOptional.get();
+            session.setIsactive(false);
+            // You might also want to save the updated session back to the database
+            sessionRepository.save(session);
+            return "Set Session to end";
+        } else {
+            // Handle the case where no session with the given ID was found
+            return "Invalid Session id";
+        }
     }
 }
